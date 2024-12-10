@@ -57,212 +57,8 @@
         }
         setInterval("getCurDate()", 100);
     </script>
-    <script>
-        // 模拟的数据，实际应用中应该从服务器获取或定义更复杂的数据结构
-        const nodes = [
-            { id: 1, name: "SLE终端1" },
-            { id: 2, name: "SLE终端2" },
-            { id: 3, name: "SLE终端3" },
-            { id: 4, name: "协同控制节点1" },
-            { id: 5, name: "协同控制节点2" },
-            { id: 6, name: "专网终端1" },
-            { id: 7, name: "专网终端2" },
-            { id: 8, name: "SLB终端1" },
-            { id: 9, name: "SLB终端2" },
-        ];
-
-        const type = [
-            { id: 1, name: "SLE连接" },
-            { id: 2, name: "SLB终端2" },
-            { id: 3, name: "协同链路连接" },
-            { id: 4, name: "专网连接" },
-        ];
-
-        window.onload = function () {
-            const selectBoxes = document.querySelectorAll('.node-select');
-
-            // 初始化下拉选择框
-            for (let i = 0; i < selectBoxes.length; i++) {
-                populateSelect(selectBoxes[i], nodes);
-            }
-        };
-
-        function populateSelect(selectBox, data) {
-            for (let node of data) {
-                let option = document.createElement('option');
-                option.value = node.id;
-                option.textContent = node.name;
-                selectBox.appendChild(option);
-            }
-        }
-
-        function updateTopology() {
-            const selectedNodes = [];
-            const selectBoxes = document.querySelectorAll('.node-select');
-
-            for (let selectBox of selectBoxes) {
-                selectedNodes.push(nodes.find(node => node.id === parseInt(selectBox.value)).name);
-            }
-
-            displaySelectedNodes(selectedNodes);
-        }
-
-        function displaySelectedNodes(nodes) {
-            const topologyArea = document.getElementById('topology-area');
-            topologyArea.innerHTML = ''; // 清除之前的节点显示
-
-            for (let nodeName of nodes) {
-                const nodeDiv = document.createElement('div');
-                nodeDiv.textContent = nodeName;
-                topologyArea.appendChild(nodeDiv);
-            }
-        }
-    </script>
 </head>
-<script>
-    async function saveLinksToServer() {
-        await fetch('http://localhost:3000/api/topology/links', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(option.series[0].links),
-        });
-    }
 
-    async function loadLinksFromServer() {
-        const response = await fetch('http://localhost:3000/api/topology/links');
-        const links = await response.json();
-        if (links) {
-            option.series[0].links = links;
-            myChart.setOption(option, true); // 更新图表
-        }
-    }
-
-    // 在页面加载时加载数据
-    document.addEventListener('DOMContentLoaded', async function () {
-        await loadLinksFromServer();
-    });
-
-</script>
-<script>document.addEventListener('DOMContentLoaded', function () {
-        const button = document.querySelector('.form-group button:nth-of-type(1)'); // 建立连接按钮
-        button.addEventListener('click', async function () {
-            // 获取下拉选择框中的值
-            const selects = document.querySelectorAll('.node-select');
-            const sourceId = parseInt(selects[0].value);
-            const targetId = parseInt(selects[1].value);
-            const Type = document.querySelectorAll('.select-style');
-            const lineType = parseInt(Type[0].value);
-
-            if (!sourceId || !targetId || sourceId === targetId ) {
-                alert("请正确地选择进行连接！");
-                return;
-            }
-
-            const sourceNode = nodes.find(node => node.id === sourceId);
-            const targetNode = nodes.find(node => node.id === targetId);
-            const lineNode = nodes.find(node => node.id === lineType);
-
-            if (sourceNode && targetNode) {
-                // 添加连接到拓扑图
-                const newLink = {
-                    source: sourceNode.name,
-                    target: targetNode.name,
-                    value: lineNode.name,
-                    lineStyle: {
-                        normal: {
-                            type: 'dotted',
-                            width: 2,
-                            color: "#5dc2fe"
-                        }
-                    }
-                };
-                option.series[0].links.push(newLink);
-
-                // 更新图表
-                myChart.setOption(option, true);
-
-                // 更新上面的字为第三个选择框选中的内容
-                const connectionTypeText = document.querySelector('.connection-type-text'); // 假设你有一个元素来显示连接类型
-                connectionTypeText.textContent = `连接类型: ${lineNode.name}`;
-
-                // 保存连接到服务器
-                try {
-                    const response = await fetch('http://localhost:3000/api/topology/links', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json', // 设置请求头为 JSON
-                        },
-                        body: JSON.stringify(option.series[0].links), // 发送当前所有连接数据
-                    });
-
-                    if (response.ok) {
-                        alert(`成功建立连接：${sourceNode.name} → ${targetNode.name}`);
-                    } else {
-                        alert(`连接保存失败：${response.status}`);
-                    }
-                } catch (error) {
-                    console.error('保存连接时发生错误:', error);
-                    alert('保存连接时发生错误，请检查服务器！');
-                }
-            }
-        });
-
-
-        const disconnectButton = document.querySelector('.form-group button:nth-of-type(2)'); // 断开连接按钮
-
-        disconnectButton.addEventListener('click', async function () {
-            const selects = document.querySelectorAll('.node-select');
-            const sourceId = parseInt(selects[0].value);
-            const targetId = parseInt(selects[1].value);
-
-            if (!sourceId || !targetId || sourceId === targetId) {
-                alert("请选择不同的节点进行断开！");
-                return;
-            }
-
-            const sourceNode = nodes.find(node => node.id === sourceId);
-            const targetNode = nodes.find(node => node.id === targetId);
-
-            if (sourceNode && targetNode) {
-                // 从连接中移除该连接
-                const initialLinkCount = option.series[0].links.length;
-                option.series[0].links = option.series[0].links.filter(
-                    link => !(link.source === sourceNode.name && link.target === targetNode.name)
-                );
-
-                if (option.series[0].links.length === initialLinkCount) {
-                    alert("未找到要断开的连接！");
-                    return;
-                }
-
-                // 更新图表
-                myChart.setOption(option, true);
-
-                // 同步更新到服务器
-                try {
-                    const response = await fetch('http://localhost:3000/api/topology/links', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json', // 设置请求头为 JSON
-                        },
-                        body: JSON.stringify(option.series[0].links), // 发送当前所有连接数据
-                    });
-
-                    if (response.ok) {
-                        alert(`成功断开连接：${sourceNode.name} → ${targetNode.name}`);
-                    } else {
-                        alert(`连接断开后保存失败：${response.status}`);
-                    }
-                } catch (error) {
-                    console.error('保存断开连接时发生错误:', error);
-                    alert('保存断开连接时发生错误，请检查服务器！');
-                }
-            }
-        });
-    });
-</script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -346,12 +142,13 @@
                                 <select class="node-select" onchange="updateTopology()"
                                     style="width: 200px; padding: 0.5px; font-size: 16px; border: 0.4px solid #95abcf; border-radius: 5px;background-color: #95abcf; color: #333;">
                                 </select>
-                                <select class="type-style" style="width: 200px; padding: 0.5px; font-size: 16px; border: 0.4px solid #95abcf; border-radius: 5px;background-color: #95abcf; color: #333;">
-                                    <option value="">连接类型</option>
-                                    <option value="1">SLE连接</option>
-                                    <option value="2">SLB连接</option>
-                                    <option value="3">协同链路连接</option>
-                                    <option value="4">专网连接</option>
+                                <select id="connection-type"
+                                    style="width: 200px; padding: 0.5px; font-size: 16px; border: 0.4px solid #95abcf; border-radius: 5px;background-color: #95abcf; color: #333;">
+                                    <option value="">请选择连接类型</option>
+                                    <option value="SLE连接">SLE连接</option>
+                                    <option value="SLB连接">SLB连接</option>
+                                    <option value="协同链路">协同链路</option>
+                                    <option value="470Mhz专网">470Mhz专网</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -438,81 +235,34 @@
                     <div class="xpanel xpanel-c-b">
                         <div class="title title-long" style="padding-left:25px">终端信息</div>
                         <div id="container" class="bcontent" style="height: 65%;">
-                            <table style="width: 100%; border-collapse: collapse;">
+                            <table class="styled-table">
                                 <tbody>
                                     <tr>
-                                        <td style="border: 1px solid #ccc; padding: 8px;">终端ip</td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;">上级节点</td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;">小车电量</td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;">小车版本</td>
+                                        <th>终端名称</th>
+                                        <th>终端类型</th>
+                                        <th>带宽</th>
+                                        <th>信道</th>
                                     </tr>
                                     <tr>
-                                        <td style="border: 1px solid #ccc; padding: 8px;">192.168.0.1</td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;">192.168.0.1</td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
+                                        <td>192.168.0.1</td>
+                                        <td>SLB</td>
+                                        <td>1</td>
+                                        <td>1234</td>
                                     </tr>
                                     <tr>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
                                     <tr>
-                                        <td style="border: 1px solid #ccc; padding: 8px;">端名称</td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;">终端类型</td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;">带宽</td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;">信道</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
                                     <tr>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
                                     </tr>
-                                    <tr>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                        <td style="border: 1px solid #ccc; padding: 8px;"></td>
-                                    </tr>
-
                                 </tbody>
                             </table>
                         </div>
@@ -534,10 +284,6 @@
 
         </div>
     </div>
-
-
-
-
 </body>
 
 <script type="text/javascript">
@@ -555,7 +301,7 @@
                 type: 'graph',
                 layout: 'none',
                 symbolSize: 45,
-                roam: false, //���大缩小
+                roam: false, //放大缩小
                 label: {
                     normal: {
                         show: true,
@@ -745,9 +491,6 @@
     if (ptoption && typeof ptoption === "object") {
         gCharts.setOption(ptoption, true);
     }
-
-
-
 </script>
 
 </html>

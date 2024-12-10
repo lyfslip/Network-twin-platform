@@ -5,6 +5,8 @@ const fs = require('fs');
 const app = express();
 const PORT = 3000;
 const DATA_FILE = 'topology.json';
+const cors = require('cors');
+app.use(cors())
 
 // 使用 body-parser 解析 JSON 请求体
 app.use(bodyParser.json());
