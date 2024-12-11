@@ -62,50 +62,68 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar', // 设置图表类型为柱状图
-            data: {
-                labels: [' ', ' ', ' ', ' ', ' ', ' ', '时间'], // X轴标签
-                datasets: [{
-                    label: '传输速率 (Mbps)', // 数据集标签
-                    data: [12, 19, 10, 12, 11, 13], // 数据数组
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 99, 132, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 99, 132, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true, // Y轴从0开始
-                        scaleLabel: {
-                            display: true, // 显示标签
-                            labelString: '传输速率 (Mbps)', // 标签内容
-                            fontColor: '#666', // 标签颜色
-                            fontSize: 14,
-                            padding: 5 // 标签字体大小
-                        }
+document.addEventListener('DOMContentLoaded', function () {
+    // 传输速率柱状图
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [' ', ' ', ' ', ' ', ' ', ' ', '时间'],
+            datasets: [{
+                label: '传输速率 (Mbps)',
+                data: [12, 19, 10, 12, 11, 13, 12],
+                backgroundColor: 'rgba(54, 162, 235, 1)',
+                borderColor: 'rgba(54, 162, 235, 0.2)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: '传输速率 (Mbps)',
+                        fontColor: '#666',
+                        fontSize: 14,
+                        padding: 5
                     }
                 }
             }
-        });
+        }
     });
+
+    // 功率折线图
+    var powerCtx = document.getElementById('powerChart').getContext('2d');
+    var powerChart = new Chart(powerCtx, {
+        type: 'line', // 设置图表类型为折线图
+        data: {
+            labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9'], // X轴标签
+            datasets: [{
+                label: '功率 (W)', // 数据集标签
+                data: [10, 15, 12, 18, 20, 25, 18, 20, 25], // 数据数组
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 2,
+                fill: true // ���充颜色
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true, // Y轴从0开始
+                    scaleLabel: {
+                        display: true,
+                        labelString: '功率 (W)', // 标签内容
+                        fontColor: '#666',
+                        fontSize: 14,
+                        padding: 5 // 标签字体大小
+                    }
+                }
+            }
+        }
+    });
+});
 </script>
 
 <body class="bg01">
@@ -230,8 +248,7 @@
 
 
             <div class="col col-r">
-
-                <div class="xpanel-wrapper xpanel-wrapper-50">
+                <div class="xpanel-wrapper xpanel-wrapper-30">
                     <div class="xpanel xpanel-c-b">
                         <div class="title title-long" style="padding-left:25px">终端信息</div>
                         <div id="container" class="bcontent" style="height: 65%;">
@@ -261,23 +278,29 @@
                                         <td></td>
                                         <td></td>
                                     </tr>
-                                    <tr>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
-                <div class="xpanel-wrapper xpanel-wrapper-45">
+                <div class="xpanel-wrapper xpanel-wrapper-40">
                     <div class="xpanel xpanel-c-b">
                         <div class="title title-long" style="padding-left:25px">实时传输速率</div>
-                        <div id="container" class="bcontent" style="height: 100%;">
+                        <div id="container" class="bcontent" style="height: 95%;">
                             <canvas id="myChart" width="400" height="400"></canvas>
                         </div>
                     </div>
                 </div>
 
+                <div class="xpanel-wrapper xpanel-wrapper-25">
+                    <div class="xpanel xpanel-c-b">
+                        <div class="title title-long" style="padding-left:25px">功率折线图</div>
+                        <div id="powerChartContainer" class="bcontent" style="height: 75%;">
+                            <canvas id="powerChart" width="500" height="250" style="margin-top: 20px;"></canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
 
 
@@ -314,7 +337,6 @@
                 edgeSymbol: ['circle'],
                 edgeSymbolSize: [4, 10],
                 edgeLabel: {
-
                     normal: {
                         show: true,
                         textStyle: {
@@ -323,153 +345,234 @@
                         formatter: "{c}"
                     }
                 },
-                data: [{
-                    name: 'SLE终端1',
-                    x: 50,
-                    y: 500
-                }, {
-                    name: 'SLE终端2',
-                    x: 50,
-                    y: 600
-                }, {
-                    name: 'SLE终端3',
-                    x: 50,
-                    y: 400
-                }, {
-                    name: '协同控制节点2',
-                    x: 200,
-                    y: 500
-                }, {
-                    name: '协同控制节点1',
-                    x: 450,
-                    y: 500
-                }, {
-                    name: '专网终端1',
-                    x: 450,
-                    y: 400
-                }, {
-                    name: '专网终端2',
-                    x: 600,
-                    y: 400
-                }, {
-                    name: 'SLB终端1',
-                    x: 600,
-                    y: 500
-                }, {
-                    name: 'SLB终端2',
-                    x: 600,
-                    y: 600
-                }],
-                // links: [],
-                links: [{
-                    source: 'SLE终端1',
-                    target: '协同控制节点2',
-                    value: '星闪SLE连接',
-                    lineStyle: {
-                        normal: {
-                            type: 'dotted',
-                            width: 2,
-                            curveness: 0,
-                            color: "#5dc2fe"
+                data: [
+                    {
+                        name: 'SLE终端1',
+                        x: 50,
+                        y: 500,
+                        symbol: 'image://img/2.png',
+                        label: {
+                            show: true,
+                            formatter: 'SLE终端1',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        }
+                    },
+                    {
+                        name: 'SLE终端2',
+                        x: 50,
+                        y: 600,
+                        symbol: 'image://img/2.png',
+                        label: {
+                            show: true,
+                            formatter: 'SLE终端2',
+                            position: 'bottom',
+                            offset: [0, 100]
+                        }
+                    },
+                    {
+                        name: 'SLE终端3',
+                        x: 50,
+                        y: 400,
+                        symbol: 'image://img/2.png',
+                        label: {
+                            show: true,
+                            formatter: 'SLE终端3',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        }
+                    },
+                    {
+                        name: '协同控制节点2',
+                        x: 200,
+                        y: 500,
+                        symbol: 'image://img/1.png',
+                        label: {
+                            show: true,
+                            formatter: '协同控制节点1',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        }
+                    },
+                    {
+                        name: '协同控制节点1',
+                        x: 450,
+                        y: 500,
+                        symbol: 'image://img/1.png',
+                        label: {
+                            show: true,
+                            formatter: '协同控制节点2',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        }
+                    },
+                    {
+                        name: '专网终端1',
+                        x: 450,
+                        y: 400,
+                        symbol: 'image://img/4.png',
+                        label: {
+                            show: true,
+                            formatter: '专网终端1',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        }
+                    },
+                    {
+                        name: '专网终端2',
+                        x: 600,
+                        y: 400,
+                        symbol: 'image://img/4.png',
+                        label: {
+                            show: true,
+                            formatter: '专网终端2',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        }
+                    },
+                    {
+                        name: 'SLB终端1',
+                        x: 600,
+                        y: 500,
+                        symbol: 'image://img/3.png',
+                        label: {
+                            show: true,
+                            formatter: 'SLB终端1',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        }
+                    },
+                    {
+                        name: 'SLB终端2',
+                        x: 600,
+                        y: 600,
+                        symbol: 'image://img/3.png',
+                        label: {
+                            show: true,
+                            formatter: 'SLB终端2',
+                            position: 'bottom',
+                            offset: [0, 10]
                         }
                     }
-                }, {
-                    source: 'SLE终端2',
-                    target: '协同控制节点2',
-                    value: '星闪SLE连接',
-                    lineStyle: {
-                        normal: {
-                            type: 'dotted',
-                            width: 2,
-                            curveness: 0,
-                            color: "#5dc2fe"
+                ],
+                links: [
+                    {
+                        source: 'SLE终端1',
+                        target: '协同控制节点2',
+                        value: '星闪SLE连接',
+                        lineStyle: {
+                            normal: {
+                                type: 'dotted',
+                                width: 2,
+                                curveness: 0,
+                                color: "#5dc2fe"
+                            }
+                        }
+                    },
+                    {
+                        source: 'SLE终端2',
+                        target: '协同控制节点2',
+                        value: '星闪SLE连接',
+                        lineStyle: {
+                            normal: {
+                                type: 'dotted',
+                                width: 2,
+                                curveness: 0,
+                                color: "#5dc2fe"
+                            }
+                        }
+                    },
+                    {
+                        source: 'SLE终端3',
+                        target: '协同控制节点2',
+                        value: '星闪SLE连接',
+                        lineStyle: {
+                            normal: {
+                                type: 'dotted',
+                                width: 2,
+                                curveness: 0,
+                                color: "#5dc2fe"
+                            }
+                        }
+                    },
+                    {
+                        source: 'SLE终端3',
+                        target: '协同控制节点2',
+                        value: 'SLE',
+                        lineStyle: {
+                            normal: {
+                                type: 'dotted',
+                                width: 2,
+                                curveness: 0,
+                                color: "#5dc2fe"
+                            }
+                        }
+                    },
+                    {
+                        source: '协同控制节点1',
+                        target: '协同控制节点2',
+                        value: '协同链路',
+                        lineStyle: {
+                            normal: {
+                                type: 'dotted',
+                                width: 2,
+                                curveness: 0,
+                                color: "#5dc2fe"
+                            }
+                        }
+                    },
+                    {
+                        source: '协同控制节点1',
+                        target: '专网终端1',
+                        value: '470MHz专网',
+                        lineStyle: {
+                            normal: {
+                                type: 'dotted',
+                                width: 2,
+                                curveness: 0,
+                                color: "#5dc2fe"
+                            }
+                        }
+                    },
+                    {
+                        source: '协同控制节点1',
+                        target: '专网终端2',
+                        value: '470MHz专网',
+                        lineStyle: {
+                            normal: {
+                                type: 'dotted',
+                                width: 2,
+                                curveness: 0,
+                                color: "#5dc2fe"
+                            }
+                        }
+                    },
+                    {
+                        source: '协同控制节点1',
+                        target: 'SLB终端1',
+                        value: '星闪SLB连接',
+                        lineStyle: {
+                            normal: {
+                                type: 'dotted',
+                                width: 2,
+                                curveness: 0,
+                                color: "#5dc2fe"
+                            }
+                        }
+                    },
+                    {
+                        source: '协同控制节点1',
+                        target: 'SLB终端2',
+                        value: '星闪SLB连接',
+                        lineStyle: {
+                            normal: {
+                                type: 'dotted',
+                                width: 2,
+                                curveness: 0,
+                                color: "#5dc2fe"
+                            }
                         }
                     }
-                }, {
-                    source: 'SLE终端3',
-                    target: '协同控制节点2',
-                    value: '星闪SLE连接',
-                    lineStyle: {
-                        normal: {
-                            type: 'dotted',
-                            width: 2,
-                            curveness: 0,
-                            color: "#5dc2fe"
-                        }
-                    }
-                }, {
-                    source: 'SLE终端3',
-                    target: '协同控制节点2',
-                    value: 'SLE',
-                    lineStyle: {
-                        normal: {
-                            type: 'dotted',
-                            width: 2,
-                            curveness: 0,
-                            color: "#5dc2fe"
-                        }
-                    }
-                }, {
-                    source: '协同控制节点1',
-                    target: '协同控制节点2',
-                    value: '协同链路',
-                    lineStyle: {
-                        normal: {
-                            type: 'dotted',
-                            width: 2,
-                            curveness: 0,
-                            color: "#5dc2fe"
-                        }
-                    }
-                }, {
-                    source: '协同控制节点1',
-                    target: '专网终端1',
-                    value: '470MHz专网',
-                    lineStyle: {
-                        normal: {
-                            type: 'dotted',
-                            width: 2,
-                            curveness: 0,
-                            color: "#5dc2fe"
-                        }
-                    }
-                }, {
-                    source: '协同控制节点1',
-                    target: '专网终端2',
-                    value: '470MHz专网',
-                    lineStyle: {
-                        normal: {
-                            type: 'dotted',
-                            width: 2,
-                            curveness: 0,
-                            color: "#5dc2fe"
-                        }
-                    }
-                }, {
-                    source: '协同控制节点1',
-                    target: 'SLB终端1',
-                    value: '星闪SLB连接',
-                    lineStyle: {
-                        normal: {
-                            type: 'dotted',
-                            width: 2,
-                            curveness: 0,
-                            color: "#5dc2fe"
-                        }
-                    }
-                }, {
-                    source: '协同控制节点1',
-                    target: 'SLB终端2',
-                    value: '星闪SLB连接',
-                    lineStyle: {
-                        normal: {
-                            type: 'dotted',
-                            width: 2,
-                            curveness: 0,
-                            color: "#5dc2fe"
-                        }
-                    }
-                },
                 ],
                 lineStyle: {
                     normal: {
