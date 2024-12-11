@@ -108,6 +108,39 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
+
+    const sendButton = document.querySelector('.send-business-button'); // 发送业务按钮
+    sendButton.addEventListener('click', function () {
+        const selects = document.querySelectorAll('.node-select');
+        const sourceId = parseInt(selects[0].value); // 第一个选择框
+        const targetId = parseInt(selects[1].value); // 第二个选择框
+        const businessType = document.getElementById('business-Type').value; // 获取业务类型选择框的值
+
+        if (!sourceId || !targetId || sourceId === targetId || !businessType) {
+            alert("请正确选择终端和业务类型！");
+            return;
+        }
+
+        // 在这两个终端之间添加一条新连线
+        const newLink = {
+            source: sourceId,
+            target: targetId,
+            value: businessType, // 使用选择的业务类型
+            lineStyle: {
+                normal: {
+                    color: '#ff0000', // 设置新连线的颜色为红色
+                    width: 2,
+                    type: 'solid' // 设置为虚线
+                }
+            }
+        };
+
+        // 将新连线添加到现有的连线数据中
+        option.series[0].links.push(newLink);
+
+        // 更新图表
+        myChart.setOption(option, true);
+    });
 });
 
 const nodes = [

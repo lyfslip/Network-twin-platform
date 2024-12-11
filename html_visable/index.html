@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 borderColor: 'rgba(54, 162, 235, 1)',
                 borderWidth: 2,
-                fill: true // ���充颜色
+                fill: true // 填充颜色
             }]
         },
         options: {
@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <select class="node-select" onchange="updateTopology()"
                                     style="width: 200px; padding: 0.5px; font-size: 16px; border: 0.4px solid #95abcf; border-radius: 5px;background-color: #95abcf; color: #333;">
                                 </select>
-                                <select class="select-style"
+                                <select id="business-Type"
                                     style="width: 200px; padding: 0.5px; font-size: 16px; border: 0.4px solid #95abcf; border-radius: 5px;background-color: #95abcf; color: #333;">
                                     <option value="">请选择业务 </option>
                                     <option value="option1">业务一</option>
@@ -221,8 +221,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 </select>
                             </div>
                             <div class="form-group">
-                                <button
-                                    style="background-color: #4c70af; color: white; padding: 0.3px 0.4px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 9px 2px; cursor: pointer;">发送业务</button>
+                                <button class="send-business-button" style="background-color: #4c70af; color: white; padding: 0.3px 0.4px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 10px 2px; cursor: pointer;">发送业务</button>
                                 <button
                                     style="background-color: #4c70af; color: white; padding: 0.3px 0.4px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 9px 2px; cursor: pointer;">建立连接</button>
                                 <button
@@ -455,124 +454,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     }
                 ],
-                links: [
-                    {
-                        source: 'SLE终端1',
-                        target: '协同控制节点2',
-                        value: '星闪SLE连接',
-                        lineStyle: {
-                            normal: {
-                                type: 'dotted',
-                                width: 2,
-                                curveness: 0,
-                                color: "#5dc2fe"
-                            }
-                        }
-                    },
-                    {
-                        source: 'SLE终端2',
-                        target: '协同控制节点2',
-                        value: '星闪SLE连接',
-                        lineStyle: {
-                            normal: {
-                                type: 'dotted',
-                                width: 2,
-                                curveness: 0,
-                                color: "#5dc2fe"
-                            }
-                        }
-                    },
-                    {
-                        source: 'SLE终端3',
-                        target: '协同控制节点2',
-                        value: '星闪SLE连接',
-                        lineStyle: {
-                            normal: {
-                                type: 'dotted',
-                                width: 2,
-                                curveness: 0,
-                                color: "#5dc2fe"
-                            }
-                        }
-                    },
-                    {
-                        source: 'SLE终端3',
-                        target: '协同控制节点2',
-                        value: 'SLE',
-                        lineStyle: {
-                            normal: {
-                                type: 'dotted',
-                                width: 2,
-                                curveness: 0,
-                                color: "#5dc2fe"
-                            }
-                        }
-                    },
-                    {
-                        source: '协同控制节点1',
-                        target: '协同控制节点2',
-                        value: '协同链路',
-                        lineStyle: {
-                            normal: {
-                                type: 'dotted',
-                                width: 2,
-                                curveness: 0,
-                                color: "#5dc2fe"
-                            }
-                        }
-                    },
-                    {
-                        source: '协同控制节点1',
-                        target: '专网终端1',
-                        value: '470MHz专网',
-                        lineStyle: {
-                            normal: {
-                                type: 'dotted',
-                                width: 2,
-                                curveness: 0,
-                                color: "#5dc2fe"
-                            }
-                        }
-                    },
-                    {
-                        source: '协同控制节点1',
-                        target: '专网终端2',
-                        value: '470MHz专网',
-                        lineStyle: {
-                            normal: {
-                                type: 'dotted',
-                                width: 2,
-                                curveness: 0,
-                                color: "#5dc2fe"
-                            }
-                        }
-                    },
-                    {
-                        source: '协同控制节点1',
-                        target: 'SLB终端1',
-                        value: '星闪SLB连接',
-                        lineStyle: {
-                            normal: {
-                                type: 'dotted',
-                                width: 2,
-                                curveness: 0,
-                                color: "#5dc2fe"
-                            }
-                        }
-                    },
-                    {
-                        source: '协同控制节点1',
-                        target: 'SLB终端2',
-                        value: '星闪SLB连接',
-                        lineStyle: {
-                            normal: {
-                                type: 'dotted',
-                                width: 2,
-                                curveness: 0,
-                                color: "#5dc2fe"
-                            }
-                        }
-                    }
+                links: [  
                 ],
                 lineStyle: {
                     normal: {
