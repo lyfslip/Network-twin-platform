@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<!--青岛研锦网络科技有限公司版权所有-->
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+    <title>网络孪生数字平台</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename='js/echarts.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jdjh.js') }}"></script>
+    <script type="text/javascript">
+
+        function getCurDate() {
+            var d = new Date();
+            var week;
+            switch (d.getDay()) {
+                case 1:
+                    week = "星期一";
+                    break;
+                case 2:
+                    week = "星期二";
+                    break;
+                case 3:
+                    week = "星期三";
+                    break;
+                case 4:
+                    week = "星期四";
+                    break;
+                case 5:
+                    week = "星期五";
+                    break;
+                case 6:
+                    week = "星期六";
+                    break;
+                default:
+                    week = "星期天";
+            }
+            var years = d.getFullYear();
+            var month = add_zero(d.getMonth() + 1);
+            var days = add_zero(d.getDate());
+            var hours = add_zero(d.getHours());
+            var minutes = add_zero(d.getMinutes());
+            var seconds = add_zero(d.getSeconds());
+            var ndate = years + "年" + month + "月" + days + "日 " + hours + ":"
+                + minutes + ":" + seconds + " " + week;
+            var divT = document.getElementById("logInfo");
+            divT.innerHTML = ndate;
+        }
+        function add_zero(temp) {
+            if (temp < 10)
+                return "0" + temp;
+            else
+                return temp;
+        }
+        setInterval("getCurDate()", 100);
+    </script>
+</head>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 传输速率柱状图
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [' ', ' ', ' ', ' ', ' ', ' ', '时间'],
+                datasets: [{
+                    label: '传输速率 (Mbps)',
+                    data: [12, 19, 10, 12, 11, 13, 12],
+                    backgroundColor: 'rgba(54, 162, 235, 1)',
+                    borderColor: 'rgba(54, 162, 235, 0.2)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: '传输速率 (Mbps)',
+                            fontColor: '#666',
+                            fontSize: 14,
+                            padding: 5
+                        }
+                    }
+                }
+            }
+        });
+
+        // 功率折线图
+        var powerCtx = document.getElementById('powerChart').getContext('2d');
+        var powerChart = new Chart(powerCtx, {
+            type: 'line', // 设置图表类型为折线图
+            data: {
+                labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9'], // X轴标签
+                datasets: [{
+                    label: '功率 (W)', // 数据集标签
+                    data: [10, 15, 12, 18, 20, 25, 18, 20, 25], // 数据数组
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    fill: true // 填充颜色
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true, // Y轴从0开始
+                        scaleLabel: {
+                            display: true,
+                            labelString: '功率 (W)', // 标签内容
+                            fontColor: '#666',
+                            fontSize: 14,
+                            padding: 5 // 标签字体大小
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+<body class="bg01">
+    <div class="header">
+        <h1 class="header-title">
+            <a href="{{ url_for('info_page') }}" style="color: white; text-decoration: none;">网络孪生数字平台</a>
+        </h1>
+        <div id="logInfo" style="text-align: left;color: #fff;position: relative;left: 10px;">
+            <script type="text/JavaScript" language="JavaScript">
+			getCurDate();
+		</script>
+        </div>
+    </div>
+    <div class="wrapper">
+        <div class="content">
+            <div class="col col-l">
+                <div class="xpanel-wrapper xpanel-wrapper-45">
+                    <div class="xpanel xpanel-l-t">
+                        <div class="title">任务说明</div>
+                        <div class="bcontent">
+                            <ul>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="xpanel-wrapper xpanel-wrapper-15">
+                    <div class="xpanel xpanel-r-m">
+                        <div class="title">多终端按需接入按需互联能力验证</div>
+                        <div class="bcontent">
+                            <div class="form-group" style="display: flex; gap: 5px; flex-wrap: wrap;">
+                                <select class="node-select" onchange="updateTopology()"
+                                    style="width: 200px; padding: 0.5px; font-size: 16px; border: 0.4px solid #95abcf; border-radius: 5px;background-color: #95abcf; color: #333;">
+                                </select>
+                                <select class="node-select" onchange="updateTopology()"
+                                    style="width: 200px; padding: 0.5px; font-size: 16px; border: 0.4px solid #95abcf; border-radius: 5px;background-color: #95abcf; color: #333;">
+                                </select>
+                                <select id="connection-type"
+                                    style="width: 200px; padding: 0.5px; font-size: 16px; border: 0.4px solid #95abcf; border-radius: 5px;background-color: #95abcf; color: #333;">
+                                    <option value="">请选择连接类型</option>
+                                    <option value="SLE连接">SLE连接</option>
+                                    <option value="SLB连接">SLB连接</option>
+                                    <option value="协同链路">协同链路</option>
+                                    <option value="470Mhz专网">470Mhz专网</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button
+                                    style="background-color: #4c70af; color: white; padding: 0.3px 0.4px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 10px 2px; cursor: pointer;">建立连接</button>
+                                <button
+                                    style="background-color: #af5b4c; color: white; padding: 0.3px 0.4px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 10px 2px; cursor: pointer;">断开连接</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="xpanel-wrapper xpanel-wrapper-15">
+                    <div class="xpanel xpanel-r-m">
+                        <div class="title">无人环境下多agv基于环境感知的网络按需构建</div>
+                        <div class="bcontent">
+                            <div class="form-group" style="display: flex; gap: 5px; flex-wrap: wrap;">
+                                <select class="node-select" onchange="updateTopology()"
+                                    style="width: 200px;padding: 0.5px; font-size: 16px; border: 0.4px solid #95abcf; border-radius: 5px;background-color: #95abcf; color: #333;">
+                                </select>
+
+                                <input type="number" placeholder="输入速率"
+                                    style="width: 200px; padding: 0.5px; font-size: 16px; border: 0.4px solid #95abcf; border-radius: 5px;background-color: #95abcf; color: #333;" />
+                            </div>
+                            <div class="form-group">
+                                <button
+                                    style="background-color: #4c70af; color: white; padding: 0.3px 0.4px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 10px 1px; cursor: pointer;">任务开始</button>
+                                <button
+                                    style="background-color: #af5b4c; color: white; padding: 0.3px 0.4px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 10px 1px; cursor: pointer;">任务结束</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="xpanel-wrapper xpanel-wrapper-20">
+                    <div class="xpanel xpanel-r-b">
+                        <div class="title">智能制造环境下终端多任务按需协同互联</div>
+                        <div class="bcontent">
+                            <div class="form-group" style="display: flex; gap: 5px; flex-wrap: wrap;">
+                                <select class="node-select" onchange="updateTopology()"
+                                    style="width: 200px; padding: 0.5px; font-size: 16px; border: 0.4px solid #95abcf; border-radius: 5px;background-color: #95abcf; color: #333;">
+                                </select>
+                                <select class="node-select" onchange="updateTopology()"
+                                    style="width: 200px; padding: 0.5px; font-size: 16px; border: 0.4px solid #95abcf; border-radius: 5px;background-color: #95abcf; color: #333;">
+                                </select>
+                                <select id="business-Type"
+                                    style="width: 200px; padding: 0.5px; font-size: 16px; border: 0.4px solid #95abcf; border-radius: 5px;background-color: #95abcf; color: #333;">
+                                    <option value="">请选择业务 </option>
+                                    <option value="业务一">业务一</option>
+                                    <option value="业务二">业务二</option>
+                                    <option value="业务三">业务三</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button class="business_start-button"
+                                    style="background-color: #4c70af; color: white; padding: 0.3px 0.4px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 10px 2px; cursor: pointer;">任务开始</button>
+                                <button class="business_end-button"
+                                    style="background-color: #af5b4c; color: white; padding: 0.3px 0.4px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 10px 2px; cursor: pointer;">任务结束</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col col-c">
+                <div class="xpanel-wrapper xpanel-wrapper-65">
+                    <div class="xpanel xpanel-c-b">
+                        <div class="title title-long" style="padding-left:25px">网络拓扑图</div>
+                        <div id="container" class="bcontent" style="height: 100%;">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col col-r">
+                <div class="xpanel-wrapper xpanel-wrapper-30">
+                    <div class="xpanel xpanel-c-b">
+                        <div class="title title-long" style="padding-left:25px">终端信息</div>
+                        <div id="container" class="bcontent" style="height: 65%;">
+                            <table class="styled-table">
+                                <tbody>
+                                    <tr>
+                                        <th>终端名称</th>
+                                        <th>终端类型</th>
+                                        <th>带宽</th>
+                                        <th>信道</th>
+                                    </tr>
+                                    <tr>
+                                        <td>192.168.0.1</td>
+                                        <td>SLB</td>
+                                        <td>1</td>
+                                        <td>1234</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="xpanel-wrapper xpanel-wrapper-40">
+                    <div class="xpanel xpanel-c-b">
+                        <div class="title title-long" style="padding-left:25px">实时传输速率</div>
+                        <div id="container" class="bcontent" style="height: 95%;">
+                            <canvas id="myChart" width="400" height="400"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="xpanel-wrapper xpanel-wrapper-25">
+                    <div class="xpanel xpanel-c-b">
+                        <div class="title title-long" style="padding-left:25px">功率折线图</div>
+                        <div id="powerChartContainer" class="bcontent" style="height: 75%;">
+                            <canvas id="powerChart" width="500" height="250" style="margin-top: 20px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+    var app = {};
+    option = null;
+    option = {
+        tooltip: {},
+        animationDurationUpdate: 1500,
+        animationEasingUpdate: 'quinticInOut',
+        color: ['#ca8622', '#bda29a', '#8B0000'],
+        series: [
+            {
+                type: 'graph',
+                layout: 'none',
+                symbolSize: 45,
+                roam: true, //放大缩小
+                draggable: true, //拖动
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            color: "#fff",
+                            fontSize: 12,
+                        }
+                    }
+                },
+                edgeSymbol: ['circle'],
+                edgeSymbolSize: [4, 10],
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                data: [
+                    {
+                        name: 'SLE终端1',
+                        x: 50,
+                        y: 500,
+                        symbol: 'image://img/2.png',
+                        label: {
+                            show: true,
+                            formatter: 'SLE终端1',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        }
+                    },
+                    {
+                        name: 'SLE终端2',
+                        x: 50,
+                        y: 600,
+                        symbol: 'image://img/2.png',
+                        label: {
+                            show: true,
+                            formatter: 'SLE终端2',
+                            position: 'bottom',
+                            offset: [0, 100]
+                        }
+                    },
+                    {
+                        name: 'SLE终端3',
+                        x: 50,
+                        y: 400,
+                        symbol: 'image://img/2.png',
+                        label: {
+                            show: true,
+                            formatter: 'SLE终端3',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        }
+                    },
+                    {
+                        name: '协同控制节点2',
+                        x: 200,
+                        y: 500,
+                        symbol: 'image://img/1.png',
+                        label: {
+                            show: true,
+                            formatter: '协同控制节点1',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        }
+                    },
+                    {
+                        name: '协同控制节点1',
+                        x: 450,
+                        y: 500,
+                        symbol: 'image://img/1.png',
+                        label: {
+                            show: true,
+                            formatter: '协同控制节点2',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        }
+                    },
+                    {
+                        name: '专网终端1',
+                        x: 450,
+                        y: 400,
+                        symbol: 'image://img/4.png',
+                        label: {
+                            show: true,
+                            formatter: '专网终端1',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        }
+                    },
+                    {
+                        name: '专网终端2',
+                        x: 600,
+                        y: 400,
+                        symbol: 'image://img/4.png',
+                        label: {
+                            show: true,
+                            formatter: '专网终端2',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        }
+                    },
+                    {
+                        name: 'SLB终端1',
+                        x: 600,
+                        y: 500,
+                        symbol: 'image://img/3.png',
+                        label: {
+                            show: true,
+                            formatter: 'SLB终端1',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        }
+                    },
+                    {
+                        name: 'SLB终端2',
+                        x: 600,
+                        y: 600,
+                        symbol: 'image://img/3.png',
+                        label: {
+                            show: true,
+                            formatter: 'SLB终端2',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        }
+                    }
+                ],
+                links: [
+                ],
+                lineStyle: [
+                ]
+
+            }
+        ]
+    };
+    if (option && typeof option === "object") {
+        myChart.setOption(option, true);
+    }
+
+    var gdom = document.getElementById("gCharts");
+    var gCharts = echarts.init(gdom);
+    if (ptoption && typeof ptoption === "object") {
+        gCharts.setOption(ptoption, true);
+    }
+</script>
+
+</html>

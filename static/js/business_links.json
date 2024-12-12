@@ -1,0 +1,197 @@
+[
+  {
+    "source": "SLE终端1",
+    "target": "协同控制节点1",
+    "value": "业务1",
+    "lineStyle": {
+      "color": "#FF0000",
+      "width": 2,
+      "type": "solid",
+      "curveness": 0.2
+    },
+    "label": {
+      "show": true,
+      "formatter": "业务1"
+    }
+  },
+  {
+    "source": "SLE终端3",
+    "target": "协同控制节点1",
+    "value": "业务1",
+    "lineStyle": {
+      "color": "#FF0000",
+      "width": 2,
+      "type": "solid",
+      "curveness": 0.2
+    },
+    "label": {
+      "show": true,
+      "formatter": "业务1"
+    }
+  },
+  {
+    "source": "SLE终端1",
+    "target": "协同控制节点1",
+    "value": "业务1",
+    "lineStyle": {
+      "color": "#FF0000",
+      "width": 2,
+      "type": "solid",
+      "curveness": 0.4
+    },
+    "label": {
+      "show": true,
+      "formatter": "业务1"
+    }
+  },
+  {
+    "source": "SLE终端1",
+    "target": "SLE终端2",
+    "value": "业务1",
+    "lineStyle": {
+      "color": "#FF0000",
+      "width": 2,
+      "type": "solid",
+      "curveness": 0.2
+    },
+    "label": {
+      "show": true,
+      "formatter": "业务1"
+    }
+  },
+  {
+    "source": "协同控制节点1",
+    "target": "协同控制节点2",
+    "value": "业务2",
+    "lineStyle": {
+      "color": "#00FF00",
+      "width": 2,
+      "type": "solid",
+      "curveness": 0.2
+    },
+    "label": {
+      "show": true,
+      "formatter": "业务2"
+    }
+  },
+  {
+    "source": "协同控制节点1",
+    "target": "协同控制节点2",
+    "value": "业务2",
+    "lineStyle": {
+      "color": "#00FF00",
+      "width": 2,
+      "type": "solid",
+      "curveness": 0.4
+    },
+    "label": {
+      "show": true,
+      "formatter": "业务2"
+    }
+  },
+  {
+    "source": "SLE终端1",
+    "target": "SLE终端2",
+    "value": "业务1",
+    "lineStyle": {
+      "color": "#FF0000",
+      "width": 2,
+      "type": "solid",
+      "curveness": 0.4
+    },
+    "label": {
+      "show": true,
+      "formatter": "业务1"
+    }
+  },
+  {
+    "source": "SLE终端1",
+    "target": "SLE终端2",
+    "value": "业务1",
+    "lineStyle": {
+      "color": "#FF0000",
+      "width": 2,
+      "type": "solid",
+      "curveness": 0.6000000000000001
+    },
+    "label": {
+      "show": true,
+      "formatter": "业务1"
+    }
+  },
+  {
+    "source": "SLE终端1",
+    "target": "SLE终端2",
+    "value": "业务1",
+    "lineStyle": {
+      "color": "#FF0000",
+      "width": 2,
+      "type": "solid",
+      "curveness": 0.8
+    },
+    "label": {
+      "show": true,
+      "formatter": "业务1"
+    }
+  },
+  {
+    "source": "SLE终端1",
+    "target": "SLE终端2",
+    "value": "业务1",
+    "lineStyle": {
+      "color": "#FF0000",
+      "width": 2,
+      "type": "solid",
+      "curveness": 1
+    },
+    "label": {
+      "show": true,
+      "formatter": "业务1"
+    }
+  },
+  {
+    "source": "SLE终端1",
+    "target": "SLE终端2",
+    "value": "业务1",
+    "lineStyle": {
+      "color": "#FF0000",
+      "width": 2,
+      "type": "solid",
+      "curveness": 1
+    },
+    "label": {
+      "show": true,
+      "formatter": "业务1"
+    }
+  },
+  {
+    "source": "SLE终端1",
+    "target": "SLE终端2",
+    "value": "业务1",
+    "lineStyle": {
+      "color": "#FF0000",
+      "width": 2,
+      "type": "solid",
+      "curveness": 1
+    },
+    "label": {
+      "show": true,
+      "formatter": "业务1"
+    }
+  },
+  {
+    "source": "SLE终端1",
+    "target": "SLE终端2",
+    "value": "业务1",
+    "lineStyle": {
+      "color": "#FF0000",
+      "width": 2,
+      "type": "solid",
+      "curveness": 1
+    },
+    "label": {
+      "show": true,
+      "formatter": "业务1"
+    }
+  }
+]

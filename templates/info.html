@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!--青岛研锦网络科技有限公司版权所有-->
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+    <title>后台管理</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename='js/echarts.min.js') }}"></script>
+    <script type="text/javascript">
+
+        function getCurDate() {
+            var d = new Date();
+            var week;
+            switch (d.getDay()) {
+                case 1:
+                    week = "星期一";
+                    break;
+                case 2:
+                    week = "星期二";
+                    break;
+                case 3:
+                    week = "星期三";
+                    break;
+                case 4:
+                    week = "星期四";
+                    break;
+                case 5:
+                    week = "星期五";
+                    break;
+                case 6:
+                    week = "星期六";
+                    break;
+                default:
+                    week = "星期天";
+            }
+            var years = d.getFullYear();
+            var month = add_zero(d.getMonth() + 1);
+            var days = add_zero(d.getDate());
+            var hours = add_zero(d.getHours());
+            var minutes = add_zero(d.getMinutes());
+            var seconds = add_zero(d.getSeconds());
+            var ndate = years + "年" + month + "月" + days + "日 " + hours + ":"
+                + minutes + ":" + seconds + " " + week;
+            var divT = document.getElementById("logInfo");
+            divT.innerHTML = ndate;
+        }
+        function add_zero(temp) {
+            if (temp < 10)
+                return "0" + temp;
+            else
+                return temp;
+        }
+        setInterval("getCurDate()", 100);
+    </script>
+    <style>
+        .col-l {
+            width: 10px; /* 调整左侧框宽度，使其更窄 */
+        }
+        .col-r {
+            flex-grow: 1; /* 右侧框自适应宽度 */
+        }
+        .content {
+            display: flex; /* 使用flex布局 */
+        }
+        body {
+            background: none; /* 去掉背景 */
+        }
+        .grid {
+            display: grid;
+            gap: 10px; /* 网格间距 */
+            height: 100%; /* 使网格占满高度 */
+        }
+        .grid-item {
+            border: 1px solid #ccc; /* 网格项边框 */
+            padding: 10px; /* 内边距 */
+            text-align: left; /* 内容左对齐 */
+            color: black; /* 设置字体颜色为黑色 */
+        }
+        #detailContent {
+            color: black; /* 设置右侧内容的字体颜色为黑色 */
+        }
+        .custom-left {
+            width: 80px; /* 自定义左侧框宽度 */
+            background-color: white; /* 设置左侧框背景颜色为白色 */
+            padding: 10px; /* 可选内边距 */
+            height: 100vh; /* 自定义左侧框高度 */
+        }
+        .custom-right {
+            flex-grow: 1; /* 右侧框自适应宽度 */
+            min-width: 100px; /* 设置右侧框的初始宽度 */
+            background-color: white; /* 设置右侧框背景颜色为白色 */
+            padding: 10px; /* 可选内边距 */
+            height: 100vh; /* 自定义右框高度 */
+        }
+        /* 设置左侧表格字体颜色为黑色 */
+        .styled-table td {
+            color: black; /* 设置左侧表格字体颜色为黑色 */
+        }
+    </style>
+</head>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<body>
+    <div class="header">
+        <h1 class="header-title">后台管理</h1>
+        <div id="logInfo" style="text-align: left;color: #fff;position: relative;left: 10px;">
+            <script type="text/JavaScript" language="JavaScript">
+                getCurDate();
+            </script>
+        </div>
+    </div>
+    <div class="wrapper">
+        <div class="content">
+            <div class="custom-left">
+                <div>
+                    <div class="title">详细内容</div>
+                    <div class="bcontent">
+                        <table class="styled-table" id="infoTable">
+                            <tbody>
+                                <tr onclick="updateRightPanel(this, 3)">
+                                    <td>网元1</td>
+                                </tr>
+                                <tr onclick="updateRightPanel(this, 4)">
+                                    <td>网元2</td>
+                                </tr>
+                                <tr onclick="updateRightPanel(this, 5)">
+                                    <td>网元3</td>
+                                </tr>
+                                <!-- 可以继续添加更多行 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="custom-right">
+                <div>
+                    <div class="title title-long" style="padding-left:25px">详细信息</div>
+                    <div id="detailContent" class="bcontent" style="height: 100%;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateRightPanel(row, columns) {
+            var content = row.cells[0].innerText; // 获取选中行的内容
+            var gridHtml = '<div class="grid" style="grid-template-columns: repeat(' + columns + ', 1fr); grid-template-rows: repeat(4, 1fr);">';
+            
+            // 根据选中的内容生成不同的表格
+            if (content === "网元1") {
+                gridHtml += '<div class="grid-item">网元1-1: <input type="text" id="net1-1" placeholder="输入内容" /></div>';
+                gridHtml += '<div class="grid-item">网元1-2: <input type="text" id="net1-2" placeholder="输入内容" /></div>';
+                gridHtml += '<div class="grid-item">网元1-2: <input type="text" id="net1-3" placeholder="输入内容" /></div>';
+                gridHtml += '<div class="grid-item">网元1-2: <input type="text" id="net1-4" placeholder="输入内容" /></div>';
+                // 继续添加更多项...
+            } else if (content === "网元2") {
+                gridHtml += '<div class="grid-item">网元2-1: <input type="text" id="net2-1" placeholder="输入内容" /></div>';
+                gridHtml += '<div class="grid-item">网元2-2: <input type="text" id="net2-2" placeholder="输入内容" /></div>';
+                gridHtml += '<div class="grid-item">网元2-3: <input type="text" id="net2-3" placeholder="输入内容" /></div>';
+                gridHtml += '<div class="grid-item">网元2-4: <input type="text" id="net2-4" placeholder="输入内容" /></div>';
+                gridHtml += '<div class="grid-item">网元2-5: <input type="text" id="net2-5" placeholder="输入内容" /></div>';
+                // 继续添加更多项...
+            } else if (content === "网元3") {
+                gridHtml += '<div class="grid-item">网元3-1: <input type="text" id="net3-1" placeholder="输入内容" /></div>';
+                gridHtml += '<div class="grid-item">网元3-2: <input type="text" id="net3-2" placeholder="输入内容" /></div>';
+                gridHtml += '<div class="grid-item">网元3-3: <input type="text" id="net3-3" placeholder="输入内容" /></div>';
+                gridHtml += '<div class="grid-item">网元3-4: <input type="text" id="net3-4" placeholder="输入内容" /></div>';
+                gridHtml += '<div class="grid-item">网元3-6: <input type="text" id="net3-6" placeholder="输入内容" /></div>';
+                gridHtml += '<div class="grid-item">网元3-6: <input type="text" id="net3-6" placeholder="输入内容" /></div>';
+            }
+            
+            gridHtml += '</div>';
+            document.getElementById("detailContent").innerHTML = gridHtml; // 更新右侧框内容
+        }
+    </script>
+</body>
+
+</html>
