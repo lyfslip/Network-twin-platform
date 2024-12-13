@@ -107,7 +107,9 @@
 
 <body>
     <div class="header">
-        <h1 class="header-title">后台管理</h1>
+        <h1 class="header-title">
+            <a href="{{ url_for('main_page') }}" style="color: white; text-decoration: none;">后台管理</a>
+        </h1>
         <div id="logInfo" style="text-align: left;color: #fff;position: relative;left: 10px;">
             <script type="text/JavaScript" language="JavaScript">
                 getCurDate();
@@ -122,14 +124,14 @@
                     <div class="bcontent">
                         <table class="styled-table" id="infoTable">
                             <tbody>
-                                <tr onclick="updateRightPanel(this, 3)">
-                                    <td>网元1</td>
-                                </tr>
-                                <tr onclick="updateRightPanel(this, 4)">
-                                    <td>网元2</td>
+                                <tr onclick="updateRightPanel(this, 5)">
+                                    <td>终端一</td>
                                 </tr>
                                 <tr onclick="updateRightPanel(this, 5)">
-                                    <td>网元3</td>
+                                    <td>终端二</td>
+                                </tr>
+                                <tr onclick="updateRightPanel(this, 5)">
+                                    <td>终端三</td>
                                 </tr>
                                 <!-- 可以继续添加更多行 -->
                             </tbody>
@@ -154,26 +156,24 @@
             var gridHtml = '<div class="grid" style="grid-template-columns: repeat(' + columns + ', 1fr); grid-template-rows: repeat(4, 1fr);">';
             
             // 根据选中的内容生成不同的表格
-            if (content === "网元1") {
-                gridHtml += '<div class="grid-item">网元1-1: <input type="text" id="net1-1" placeholder="输入内容" /></div>';
-                gridHtml += '<div class="grid-item">网元1-2: <input type="text" id="net1-2" placeholder="输入内容" /></div>';
-                gridHtml += '<div class="grid-item">网元1-2: <input type="text" id="net1-3" placeholder="输入内容" /></div>';
-                gridHtml += '<div class="grid-item">网元1-2: <input type="text" id="net1-4" placeholder="输入内容" /></div>';
-                // 继续添加更多项...
-            } else if (content === "网元2") {
-                gridHtml += '<div class="grid-item">网元2-1: <input type="text" id="net2-1" placeholder="输入内容" /></div>';
-                gridHtml += '<div class="grid-item">网元2-2: <input type="text" id="net2-2" placeholder="输入内容" /></div>';
-                gridHtml += '<div class="grid-item">网元2-3: <input type="text" id="net2-3" placeholder="输入内容" /></div>';
-                gridHtml += '<div class="grid-item">网元2-4: <input type="text" id="net2-4" placeholder="输入内容" /></div>';
-                gridHtml += '<div class="grid-item">网元2-5: <input type="text" id="net2-5" placeholder="输入内容" /></div>';
-                // 继续添加更多项...
-            } else if (content === "网元3") {
-                gridHtml += '<div class="grid-item">网元3-1: <input type="text" id="net3-1" placeholder="输入内容" /></div>';
-                gridHtml += '<div class="grid-item">网元3-2: <input type="text" id="net3-2" placeholder="输入内容" /></div>';
-                gridHtml += '<div class="grid-item">网元3-3: <input type="text" id="net3-3" placeholder="输入内容" /></div>';
-                gridHtml += '<div class="grid-item">网元3-4: <input type="text" id="net3-4" placeholder="输入内容" /></div>';
-                gridHtml += '<div class="grid-item">网元3-6: <input type="text" id="net3-6" placeholder="输入内容" /></div>';
-                gridHtml += '<div class="grid-item">网元3-6: <input type="text" id="net3-6" placeholder="输入内容" /></div>';
+            if (content === "终端一") {
+                gridHtml += '<div class="grid-item">设备类型: <input type="text" id="net1-1" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item">信道: <input type="text" id="net1-2" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item">带宽: <input type="text" id="net1-3" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item">IP地址: <input type="text" id="net1-4" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item">电量（可选）: <input type="text" id="net1-5" placeholder="" /></div>';
+            } else if (content === "终端二") {
+                gridHtml += '<div class="grid-item">设备类型: <input type="text" id="net2-1" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item">信道: <input type="text" id="net2-2" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item">带宽: <input type="text" id="net2-3" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item">IP地址: <input type="text" id="net2-4" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item">电量（可选）: <input type="text" id="net2-5" placeholder="" /></div>';
+            } else if (content === "终端三") {
+                gridHtml += '<div class="grid-item">设备类型: <input type="text" id="net3-1" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item">信道: <input type="text" id="net3-2" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item">带宽: <input type="text" id="net3-3" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item">IP地址: <input type="text" id="net3-4" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item">电量（可选）: <input type="text" id="net3-4" placeholder="" /></div>';
             }
             
             gridHtml += '</div>';
