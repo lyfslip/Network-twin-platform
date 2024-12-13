@@ -127,6 +127,41 @@
 </script>
 
 <body class="bg01">
+
+    <script>
+        async function loadTerminalData() {
+            try {
+                const response = await fetch('http://localhost:3000/save-data'); // 确保路径正确
+                if (!response.ok) {
+                    throw new Error('网络响应不正常');
+                }
+                const data = await response.json();
+
+                // 获取表格的 tbody
+                const tableBody = document.getElementById('terminalInfoBody');
+                tableBody.innerHTML = ''; // 清空现有数据
+
+                // 遍历每个终端并填充表格
+                for (const terminal in data) {
+                    const terminalData = data[terminal];
+                    const row = tableBody.insertRow();
+                    row.insertCell(0).innerText = terminalData['net1']; // 设备类型
+                    row.insertCell(1).innerText = terminalData['net2']; // 频道
+                    row.insertCell(2).innerText = terminalData['net3']; // 带宽
+                    row.insertCell(3).innerText = terminalData['net4']; // IP地址
+                    row.insertCell(4).innerText = terminalData['net5']; // 电量
+                }
+            } catch (error) {
+                console.error('加载数据时发生错误:', error);
+            }
+        }
+
+        // 在页面加载完成后调用 loadTerminalData
+        document.addEventListener('DOMContentLoaded', function () {
+            loadTerminalData();
+        });
+    </script>
+
     <div class="header">
         <h1 class="header-title">
             <a href="{{ url_for('info_page') }}" style="color: white; text-decoration: none;">网络孪生数字平台</a>
@@ -253,31 +288,17 @@
                         <div class="title title-long" style="padding-left:25px">终端信息</div>
                         <div id="container" class="bcontent" style="height: 65%;">
                             <table class="styled-table">
-                                <tbody>
+                                <thead>
                                     <tr>
-                                        <th>终端名称</th>
                                         <th>终端类型</th>
+                                        <th>频道</th>
                                         <th>带宽</th>
-                                        <th>信道</th>
+                                        <th>IP地址</th>
+                                        <th>电量</th>
                                     </tr>
-                                    <tr>
-                                        <td>192.168.0.1</td>
-                                        <td>SLB</td>
-                                        <td>1</td>
-                                        <td>1234</td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
+                                </thead>
+                                <tbody id="terminalInfoBody">
+                                    <!-- 动态填充终端信息 -->
                                 </tbody>
                             </table>
                         </div>

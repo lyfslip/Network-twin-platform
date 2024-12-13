@@ -1,7 +1,12 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 import subprocess
+import os
 
 app = Flask(__name__)
+
+@app.route('/terminal_data.json')
+def get_terminal_data():
+    return send_from_directory(os.getcwd(), 'terminal_data.json')
 
 # 启动 server.js
 def run_server_js():

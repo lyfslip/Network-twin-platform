@@ -58,47 +58,55 @@
     </script>
     <style>
         .col-l {
-            width: 10px; /* 调整左侧框宽度，使其更窄 */
+            width: 10px;
         }
+
         .col-r {
-            flex-grow: 1; /* 右侧框自适应宽度 */
+            flex-grow: 1;
         }
+
         .content {
-            display: flex; /* 使用flex布局 */
+            display: flex;
         }
+
         body {
-            background: none; /* 去掉背景 */
+            background: none;
         }
+
         .grid {
             display: grid;
-            gap: 10px; /* 网格间距 */
-            height: 100%; /* 使网格占满高度 */
+            gap: 10px;
+            height: 100%;
         }
+
         .grid-item {
-            border: 1px solid #ccc; /* 网格项边框 */
-            padding: 10px; /* 内边距 */
-            text-align: left; /* 内容左对齐 */
-            color: black; /* 设置字体颜色为黑色 */
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+            color: black;
         }
+
         #detailContent {
-            color: black; /* 设置右侧内容的字体颜色为黑色 */
+            color: black;
         }
+
         .custom-left {
-            width: 80px; /* 自定义左侧框宽度 */
-            background-color: white; /* 设置左侧框背景颜色为白色 */
-            padding: 10px; /* 可选内边距 */
-            height: 100vh; /* 自定义左侧框高度 */
+            width: 80px;
+            background-color: white;
+            padding: 10px;
+            height: 100vh;
         }
+
         .custom-right {
-            flex-grow: 1; /* 右侧框自适应宽度 */
-            min-width: 100px; /* 设置右侧框的初始宽度 */
-            background-color: white; /* 设置右侧框背景颜色为白色 */
-            padding: 10px; /* 可选内边距 */
-            height: 100vh; /* 自定义右框高度 */
+            flex-grow: 1;
+            min-width: 100px;
+            background-color: white;
+            padding: 10px;
+            height: 100vh;
         }
-        /* 设置左侧表格字体颜色为黑色 */
+
         .styled-table td {
-            color: black; /* 设置左侧表格字体颜色为黑色 */
+            color: black;
         }
     </style>
 </head>
@@ -124,14 +132,14 @@
                     <div class="bcontent">
                         <table class="styled-table" id="infoTable">
                             <tbody>
-                                <tr onclick="updateRightPanel(this, 5)">
-                                    <td>终端一</td>
+                                <tr onclick="selectTerminal(this, 5, '终端一')">
+                                    <td style="background-color: #ffcccc;">终端一</td> <!-- 设置背景色 -->
                                 </tr>
-                                <tr onclick="updateRightPanel(this, 5)">
-                                    <td>终端二</td>
+                                <tr onclick="selectTerminal(this, 5, '终端二')">
+                                    <td style="background-color: #ccffcc;">终端二</td> <!-- 设置背景色 -->
                                 </tr>
-                                <tr onclick="updateRightPanel(this, 5)">
-                                    <td>终端三</td>
+                                <tr onclick="selectTerminal(this, 5, '终端三')">
+                                    <td style="background-color: #ccccff;">终端三</td> <!-- 设置背景色 -->
                                 </tr>
                                 <!-- 可以继续添加更多行 -->
                             </tbody>
@@ -143,43 +151,134 @@
             <div class="custom-right">
                 <div>
                     <div class="title title-long" style="padding-left:25px">详细信息</div>
-                    <div id="detailContent" class="bcontent" style="height: 100%;">
-                    </div>
+                    <div id="detailContent" class="bcontent" style="height: 100%;"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        async function loadDataForTerminal(terminalName) {
+            try {
+                const response = await fetch('http://localhost:3000/save-data');
+                if (!response.ok) {
+                    console.error(`加载数据失败: ${response.status}`);
+                    return;
+                }
+                const data = await response.json();
+                const terminalData = data[terminalName];
+                if (terminalData) {
+                    for (let key in terminalData) {
+                        const input = document.getElementById(key);
+                        if (input) {
+                            input.value = terminalData[key];
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('加载数据时发生错误:', error);
+            }
+        }
+
+        let currentTerminal = null; // 记录当前选择的终端
+        document.addEventListener('DOMContentLoaded', async function () {
+            // 假设页面加载时就以"终端一"作为默认终端
+            currentTerminal = "终端一";
+
+            // 手动调用 updateRightPanel 来生成对应的输入框(假设有一个虚拟的row对象或者您可以直接模拟这个过程)
+            // 如果row对象是从表格中点击产生的，那么需要伪造或选择DOM中的第一行：
+            const row = document.querySelector('#infoTable tr:nth-child(1)');
+            if (row) {
+                updateRightPanel(row, 5);
+            }
+
+            // 输入框生成后再加载数据
+            await loadDataForTerminal(currentTerminal);
+        });
+
+        function selectTerminal(row, columns, terminalName) {
+            currentTerminal = terminalName;
+            updateRightPanel(row, columns);
+            // 当终端选择变化后，加载该终端的数据
+            loadDataForTerminal(terminalName);
+        }
+
         function updateRightPanel(row, columns) {
             var content = row.cells[0].innerText; // 获取选中行的内容
+            var backgroundColor = row.cells[0].style.backgroundColor; // 获取选中行第一个单元格的背景色
             var gridHtml = '<div class="grid" style="grid-template-columns: repeat(' + columns + ', 1fr); grid-template-rows: repeat(4, 1fr);">';
-            
-            // 根据选中的内容生成不同的表格
+    
+             // 根据选中的内容生成不同的表格
             if (content === "终端一") {
-                gridHtml += '<div class="grid-item">设备类型: <input type="text" id="net1-1" placeholder="" /></div>';
-                gridHtml += '<div class="grid-item">信道: <input type="text" id="net1-2" placeholder="" /></div>';
-                gridHtml += '<div class="grid-item">带宽: <input type="text" id="net1-3" placeholder="" /></div>';
-                gridHtml += '<div class="grid-item">IP地址: <input type="text" id="net1-4" placeholder="" /></div>';
-                gridHtml += '<div class="grid-item">电量（可选）: <input type="text" id="net1-5" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">设备类型: <input type="text" id="net1" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">频道: <input type="text" id="net2" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">带宽: <input type="text" id="net3" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">IP地址: <input type="text" id="net4" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">电量（可选）: <input type="text" id="net5" placeholder="" /></div>';
             } else if (content === "终端二") {
-                gridHtml += '<div class="grid-item">设备类型: <input type="text" id="net2-1" placeholder="" /></div>';
-                gridHtml += '<div class="grid-item">信道: <input type="text" id="net2-2" placeholder="" /></div>';
-                gridHtml += '<div class="grid-item">带宽: <input type="text" id="net2-3" placeholder="" /></div>';
-                gridHtml += '<div class="grid-item">IP地址: <input type="text" id="net2-4" placeholder="" /></div>';
-                gridHtml += '<div class="grid-item">电量（可选）: <input type="text" id="net2-5" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">设备类型: <input type="text" id="net1" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">频道: <input type="text" id="net2" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">带宽: <input type="text" id="net3" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">IP地址: <input type="text" id="net4" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">电量（可选）: <input type="text" id="net5" placeholder="" /></div>';
             } else if (content === "终端三") {
-                gridHtml += '<div class="grid-item">设备类型: <input type="text" id="net3-1" placeholder="" /></div>';
-                gridHtml += '<div class="grid-item">信道: <input type="text" id="net3-2" placeholder="" /></div>';
-                gridHtml += '<div class="grid-item">带宽: <input type="text" id="net3-3" placeholder="" /></div>';
-                gridHtml += '<div class="grid-item">IP地址: <input type="text" id="net3-4" placeholder="" /></div>';
-                gridHtml += '<div class="grid-item">电量（可选）: <input type="text" id="net3-4" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">设备类型: <input type="text" id="net1" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">频道: <input type="text" id="net2" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">带宽: <input type="text" id="net3" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">IP地址: <input type="text" id="net4" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">电量（可选）: <input type="text" id="net5" placeholder="" /></div>';
             }
-            
+    
             gridHtml += '</div>';
+    
+            // 添加上传按钮在表格右下角
+            gridHtml += '<div style="text-align: right; margin-top: 10px;">';
+            gridHtml += '<button onclick="submitData()" style="background-color: #4c70af; color: white; padding: 20px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 23px;">提交</button>';
+            gridHtml += '</div>';
+    
             document.getElementById("detailContent").innerHTML = gridHtml; // 更新右侧框内容
         }
+
+        async function submitData() {
+            if (!currentTerminal) {
+                alert('请先选择一个终端');
+                return;
+            }
+
+            // 从页面中获取数据
+            const inputs = document.querySelectorAll('#detailContent input');
+            const values = {};
+            inputs.forEach(input => {
+                values[input.id] = input.value;
+            });
+
+            const data = {
+                terminal: currentTerminal,
+                values: values
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/save-data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                if (response.ok) {
+                    alert('数据已成功保存');
+                } else {
+                    console.error(`保存数据失败: ${response.status}`);
+                    alert('数据保存失败，请检查服务器！');
+                }
+            } catch (error) {
+                console.error('保存数据时发生错误:', error);
+                alert('保存数据时发生错误，请检查服务器！');
+            }
+        }
     </script>
+
 </body>
 
 </html>
