@@ -1,8 +1,34 @@
 [
   {
-    "source": "协同控制节点2",
-    "target": "SLE终端1",
+    "source": "SLE终端3",
+    "target": "协同控制节点2",
     "value": "SLE连接",
+    "lineStyle": {
+      "normal": {
+        "type": "dotted",
+        "width": 2,
+        "color": "white",
+        "curveness": 0
+      }
+    }
+  },
+  {
+    "source": "协同控制节点1",
+    "target": "协同控制节点2",
+    "value": "协同链路",
+    "lineStyle": {
+      "normal": {
+        "type": "dotted",
+        "width": 2,
+        "color": "yellow",
+        "curveness": 0
+      }
+    }
+  },
+  {
+    "source": "协同控制节点1",
+    "target": "专网终端1",
+    "value": "470Mhz专网",
     "lineStyle": {
       "normal": {
         "type": "dotted",
@@ -13,14 +39,14 @@
     }
   },
   {
-    "source": "SLE终端3",
-    "target": "协同控制节点2",
-    "value": "SLE连接",
+    "source": "协同控制节点1",
+    "target": "SLB终端1",
+    "value": "SLB连接",
     "lineStyle": {
       "normal": {
         "type": "dotted",
         "width": 2,
-        "color": "#5dc2fe",
+        "color": "red",
         "curveness": 0
       }
     }

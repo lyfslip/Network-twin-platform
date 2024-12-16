@@ -10,6 +10,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 return '#00FF00'; // 绿色
             case '业务三':
                 return '#FFA500'; // 橙色
+            case 'SLE连接':
+                return 'white'; // SLE连接用蓝色
+            case 'SLB连接':
+                return 'red'; // SLB连接用红色
+            case '协同链路':
+                return 'yellow'; // 协同链路用黄色
+            case '470MHz专网':
+                return 'green'; // 470MHz专网用绿色
             default:
                 return '#5dc2fe'; // 默认颜色
         }
@@ -50,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     normal: {
                         type: 'dotted',
                         width: 2,
-                        color: "#5dc2fe",
+                        color: getLinkColor(connectionType),
                         curveness: 0
                     }
                 }
