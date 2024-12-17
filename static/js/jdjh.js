@@ -1,3 +1,20 @@
+document.addEventListener('DOMContentLoaded', async function () {
+    await loadLinksFromServer(); // 加载当前连接状态
+});
+
+async function loadLinksFromServer() {
+    try {
+        const response = await fetch('http://localhost:3000/api/topology/links');
+        const links = await response.json();
+        if (links) {
+            option.series[0].links = links; // 更新连接数据
+            myChart.setOption(option, true); // 更新图表
+        }
+    } catch (error) {
+        console.error('加载连接时发生错误:', error);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const linkCurvenessMap = {};
 
@@ -5,19 +22,19 @@ document.addEventListener('DOMContentLoaded', function () {
     function getLinkColor(type) {
         switch (type) {
             case '业务一':
-                return '#FF0000'; // 红色
+                return 'gold'; // 
             case '业务二':
-                return '#00FF00'; // 绿色
+                return 'pink'; // 
             case '业务三':
-                return '#FFA500'; // 橙色
+                return 'orange'; // 
             case 'SLE连接':
-                return 'white'; // SLE连接用蓝色
+                return 'green'; // 
             case 'SLB连接':
-                return 'red'; // SLB连接用红色
+                return 'red'; // 
             case '协同链路':
-                return 'yellow'; // 协同链路用黄色
-            case '470MHz专网':
-                return 'green'; // 470MHz专网用绿色
+                return 'yellow'; // 
+            case '470Mhz专网':
+                return '#5dc2fe'; // 
             default:
                 return '#5dc2fe'; // 默认颜色
         }
@@ -138,6 +155,8 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     });
 
+    let isTaskEndedManually = false; // 标志变量，指示任务是否被手动结束
+
     const sendbdButton = document.querySelector('.business_start-button'); // 发送业务按钮
     sendbdButton.addEventListener('click', async function () {
         const selects = document.querySelectorAll('.node-select');
@@ -184,6 +203,53 @@ document.addEventListener('DOMContentLoaded', function () {
 
             option.series[0].links.push(newLink);
             myChart.setOption(option, true);
+
+            // 设置断开时间
+            let disconnectTime;
+            switch (businessType) {
+                case '业务一':
+                    disconnectTime = 8000; // 8秒后断开
+                    break;
+                case '业务二':
+                    disconnectTime = 5000; // 5秒后断开
+                    break;
+                case '业务三':
+                    disconnectTime = 3000; // 3秒后断开
+                    break;
+                default:
+                    disconnectTime = 0; // 默认不断开
+            }
+
+            // 使用 setTimeout 在指定时间后断开连接
+            if (disconnectTime > 0) {
+                const timeoutId = setTimeout(async () => {
+                    // 从业务连接中移除该连接
+                    option.series[0].links = option.series[0].links.filter(
+                        link => !(link.source === sourceName && link.target === targetName)
+                    );
+                    myChart.setOption(option, true);
+                    alert(`成功断开业务连接：${sourceName} → ${targetName}`);
+
+                    // 发送更新后的连接状态到服务器
+                    try {
+                        const response = await fetch('http://localhost:3000/api/topology/links', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(option.series[0].links),
+                        });
+
+                        if (!response.ok) {
+                            console.error(`更新连接状态失败：${response.status}`);
+                        }
+                    } catch (error) {
+                        console.error('保存连接时发生错误:', error);
+                    }
+                }, disconnectTime);
+            }
+
+            // 发送业务到服务器
             try {
                 const response = await fetch('http://localhost:3000/api/topology/links', {
                     method: 'POST',
@@ -222,19 +288,16 @@ document.addEventListener('DOMContentLoaded', function () {
         if (sourceNode && targetNode) {
             const sourceName = sourceNode.name;
             const targetName = targetNode.name;
-            const key = sourceName < targetName ? sourceName + '-' + targetName : targetName + '-' + sourceName;
 
             // 从业务连接中移除该连接
-            const initialLinkCount = option.series[0].links.length;
             option.series[0].links = option.series[0].links.filter(
                 link => !(link.source === sourceName && link.target === targetName)
             );
 
-            if (option.series[0].links.length === initialLinkCount) {
-                alert("未找到要断开的业务连接！");
-                return;
-            }
             myChart.setOption(option, true);
+            isTaskEndedManually = true; // 设置标志变量为 true，表示任务已手动结束
+
+            // 同步更新到服务器
             try {
                 const response = await fetch('http://localhost:3000/api/topology/links', {
                     method: 'POST',
@@ -322,16 +385,3 @@ async function saveLinksToServer() {
         body: JSON.stringify(option.series[0].links),
     });
 }
-
-async function loadLinksFromServer() {
-    const response = await fetch('http://localhost:3000/api/topology/links');
-    const links = await response.json();
-    if (links) {
-        option.series[0].links = links;
-        myChart.setOption(option, true); // 更新图表
-    }
-}
-
-document.addEventListener('DOMContentLoaded', async function () {
-    await loadLinksFromServer();
-});

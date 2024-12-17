@@ -1,18 +1,5 @@
 [
   {
-    "source": "SLE终端3",
-    "target": "协同控制节点2",
-    "value": "SLE连接",
-    "lineStyle": {
-      "normal": {
-        "type": "dotted",
-        "width": 2,
-        "color": "white",
-        "curveness": 0
-      }
-    }
-  },
-  {
     "source": "协同控制节点1",
     "target": "协同控制节点2",
     "value": "协同链路",
@@ -27,7 +14,72 @@
   },
   {
     "source": "协同控制节点1",
-    "target": "专网终端1",
+    "target": "SLB终端1",
+    "value": "SLB连接",
+    "lineStyle": {
+      "normal": {
+        "type": "dotted",
+        "width": 2,
+        "color": "red",
+        "curveness": 0
+      }
+    }
+  },
+  {
+    "source": "SLE终端1",
+    "target": "协同控制节点2",
+    "value": "SLE连接",
+    "lineStyle": {
+      "normal": {
+        "type": "dotted",
+        "width": 2,
+        "color": "green",
+        "curveness": 0
+      }
+    }
+  },
+  {
+    "source": "SLE终端2",
+    "target": "协同控制节点2",
+    "value": "SLE连接",
+    "lineStyle": {
+      "normal": {
+        "type": "dotted",
+        "width": 2,
+        "color": "green",
+        "curveness": 0
+      }
+    }
+  },
+  {
+    "source": "SLE终端3",
+    "target": "协同控制节点2",
+    "value": "SLE连接",
+    "lineStyle": {
+      "normal": {
+        "type": "dotted",
+        "width": 2,
+        "color": "green",
+        "curveness": 0
+      }
+    }
+  },
+  {
+    "source": "SLB终端2",
+    "target": "协同控制节点1",
+    "value": "SLB连接",
+    "lineStyle": {
+      "normal": {
+        "type": "dotted",
+        "width": 2,
+        "color": "red",
+        "curveness": 0
+      }
+    }
+  },
+  {
+    "source": "专网终端1",
+    "target": "协同控制节点1",
     "value": "470Mhz专网",
     "lineStyle": {
       "normal": {
@@ -39,14 +91,14 @@
     }
   },
   {
-    "source": "协同控制节点1",
-    "target": "SLB终端1",
-    "value": "SLB连接",
+    "source": "专网终端2",
+    "target": "协同控制节点1",
+    "value": "470Mhz专网",
     "lineStyle": {
       "normal": {
         "type": "dotted",
         "width": 2,
-        "color": "red",
+        "color": "#5dc2fe",
         "curveness": 0
       }
     }
