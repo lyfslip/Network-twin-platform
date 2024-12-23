@@ -102,5 +102,18 @@
         "curveness": 0
       }
     }
+  },
+  {
+    "source": "SLE终端1",
+    "target": "SLE终端2",
+    "value": "SLE连接",
+    "lineStyle": {
+      "normal": {
+        "type": "dotted",
+        "width": 2,
+        "color": "green",
+        "curveness": 0
+      }
+    }
   }
 ]

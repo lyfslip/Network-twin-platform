@@ -100,7 +100,7 @@
         // 功率折线图
         var powerCtx = document.getElementById('powerChart').getContext('2d');
         var powerChart = new Chart(powerCtx, {
-            type: 'line', // 设置图表类型为折线图
+            type: 'line', // 设置图表类型折线图
             data: {
                 labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9'], // X轴标签
                 datasets: [{
@@ -196,8 +196,8 @@
                     <div class="xpanel xpanel-l-t">
                         <div class="title">任务说明</div>
                         <div class="bcontent">
-                            <ul>
-
+                            <ul id="taskDescription">
+                                <!-- 连接消息将显示在这里 -->
                             </ul>
                         </div>
                     </div>
@@ -291,9 +291,8 @@
                 <div class="xpanel-wrapper xpanel-wrapper-65">
                     <div class="xpanel xpanel-c-b">
                         <div class="title title-long" style="padding-left:25px">网络拓扑图</div>
-                        <div id="container" class="bcontent" style="height: 100%;">
-
-                        </div>
+                        <div id="container" style="height: 100% ">
+                        </div>                        
                     </div>
                 </div>
             </div>
@@ -511,6 +510,7 @@
     if (ptoption && typeof ptoption === "object") {
         gCharts.setOption(ptoption, true);
     }
+
 </script>
 
 </html>

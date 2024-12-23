@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const sourceId = parseInt(selects[0].value);
         const targetId = parseInt(selects[1].value);
 
-        if (!sourceId || !targetId || sourceId === targetId) {
+        if (!sourceId || !targetId || sourceId === targetId ||!connectionType) {
             alert("请选择不同的节点进行连接！");
             return;
         }
@@ -82,6 +82,15 @@ document.addEventListener('DOMContentLoaded', function () {
             };
             option.series[0].links.push(newLink);
             myChart.setOption(option, true);
+
+            // 更新任务说明框
+            const taskDescription = document.getElementById('taskDescription');
+            const listItem = document.createElement('li');
+            listItem.innerText = `${sourceName} 和 ${targetName} 之间建立 ${connectionType}`;
+            listItem.style.fontSize = '20px';
+            listItem.style.color = 'white';
+            taskDescription.appendChild(listItem);
+
 
             // 保存连接到服务器
             try {
@@ -121,6 +130,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const targetNode = nodes.find(node => node.id === targetId);
 
         if (sourceNode && targetNode) {
+            const sourceName = sourceNode.name;
+            const targetName = targetNode.name;
             const initialLinkCount = option.series[0].links.length;
             option.series[0].links = option.series[0].links.filter(
                 link => !(link.source === sourceNode.name && link.target === targetNode.name)
@@ -131,6 +142,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
+            const taskDescription = document.getElementById('taskDescription');
+            const listItem = document.createElement('li');
+            listItem.innerText = `${sourceName} 和 ${targetName} 之间断开连接`;
+            listItem.style.fontSize = '20px';
+            listItem.style.color = 'white';
+            taskDescription.appendChild(listItem);
             myChart.setOption(option, true);
 
             // 同步更新到服务器
@@ -203,6 +220,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
             option.series[0].links.push(newLink);
             myChart.setOption(option, true);
+
+             // 更新任务说明框
+            const taskDescription = document.getElementById('taskDescription');
+            const listItem = document.createElement('li');
+            listItem.innerText = `${sourceName} 和 ${targetName} 之间发送 ${businessType} `;
+            listItem.style.fontSize = '20px';
+            listItem.style.color = 'white';
+            taskDescription.appendChild(listItem);
 
             // 设置断开时间
             let disconnectTime;
@@ -296,6 +321,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             myChart.setOption(option, true);
             isTaskEndedManually = true; // 设置标志变量为 true，表示任务已手动结束
+            
 
             // 同步更新到服务器
             try {
