@@ -78,6 +78,10 @@
                 }]
             },
             options: {
+                animation: {
+                    duration: 1000, // 动画持续时间
+                    easing: 'easeInOutQuad' // 动画缓动效果
+                },
                 scales: {
                     y: {
                         beginAtZero: true,
@@ -105,10 +109,14 @@
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 2,
-                    fill: true // 填充颜色
+                    fill: true, // 填充颜色
                 }]
             },
             options: {
+                animation: {
+                    duration: 1000, // 动画持续时间
+                    easing: 'easeInOutQuad' // 动画缓动效果
+                },
                 scales: {
                     y: {
                         beginAtZero: true, // Y轴从0开始
@@ -123,6 +131,17 @@
                 }
             }
         });
+
+        // 动态更新数据示例
+        setInterval(() => {
+            // 更新传输速率数据
+            myChart.data.datasets[0].data = myChart.data.datasets[0].data.map(() => Math.floor(Math.random() * 20));
+            myChart.update(); // 更新图表
+
+            // 更新功率数据
+            powerChart.data.datasets[0].data = powerChart.data.datasets[0].data.map(() => Math.floor(Math.random() * 30));
+            powerChart.update(); // 更新图表
+        }, 1500); // 每1.5秒更新一次数据
     });
 </script>
 
@@ -136,28 +155,26 @@
                     throw new Error('网络响应不正常');
                 }
                 const data = await response.json();
-
                 // 获取表格的 tbody
                 const tableBody = document.getElementById('terminalInfoBody');
                 tableBody.innerHTML = ''; // 清空现有数据
-
                 // 遍历每个终端并填充表格
                 for (const terminal in data) {
                     const terminalData = data[terminal];
                     const row = tableBody.insertRow();
-                    row.insertCell(0).innerText = terminalData['net1']; // 设备类型
-                    row.insertCell(1).innerText = terminalData['net2']; // 频道
-                    row.insertCell(2).innerText = terminalData['net3']; // 带宽
-                    row.insertCell(3).innerText = terminalData['net4']; // IP地址
-                    row.insertCell(4).innerText = terminalData['net5']; // 电量
+                    row.insertCell(0).innerText = terminalData['net1'] !== undefined ? terminalData['net1'] : ''; // 设备类型
+                    row.insertCell(1).innerText = terminalData['net2'] !== undefined ? terminalData['net2'] : ''; // 频道
+                    row.insertCell(2).innerText = terminalData['net3'] !== undefined ? terminalData['net3'] : ''; // 带宽
+                    row.insertCell(3).innerText = terminalData['net4'] !== undefined ? terminalData['net4'] : ''; // IP地址
+                    row.insertCell(4).innerText = terminalData['net5'] !== undefined ? terminalData['net5'] : ''; // 电量
                 }
             } catch (error) {
                 console.error('加载数据时发生错误:', error);
             }
         }
 
-        // 在页面加载完成后调用 loadTerminalData
-        document.addEventListener('DOMContentLoaded', function () {
+                // 在页面加载完成后调用 loadTerminalData
+            document.addEventListener('DOMContentLoaded', function () {
             loadTerminalData();
         });
     </script>
@@ -286,11 +303,11 @@
                 <div class="xpanel-wrapper xpanel-wrapper-30">
                     <div class="xpanel xpanel-c-b">
                         <div class="title title-long" style="padding-left:25px">终端信息</div>
-                        <div id="container" class="bcontent" style="height: 65%;">
+                        <div id="terminalInfoContainer" class="bcontent" style="height: 65%; overflow-y: auto;">
                             <table class="styled-table">
                                 <thead>
                                     <tr>
-                                        <th>终端类型</th>
+                                        <th>设备类型</th>
                                         <th>频道</th>
                                         <th>带宽</th>
                                         <th>IP地址</th>

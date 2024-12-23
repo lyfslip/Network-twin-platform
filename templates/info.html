@@ -141,6 +141,15 @@
                                 <tr onclick="selectTerminal(this, 5, '终端三')">
                                     <td style="background-color: #ccccff;">终端三</td> <!-- 设置背景色 -->
                                 </tr>
+                                <tr onclick="selectTerminal(this, 5, '终端四')">
+                                    <td style="background-color: #afc78f;">终端四</td> <!-- 设置背景色 -->
+                                </tr>
+                                <tr onclick="selectTerminal(this, 5, '终端五')">
+                                    <td style="background-color: #3a5e86;">终端五</td> <!-- 设置背景色 -->
+                                </tr>
+                                <tr onclick="selectTerminal(this, 5, '终端六')">
+                                    <td style="background-color: #994a75;">终端六</td> <!-- 设置背景色 -->
+                                </tr>
                                 <!-- 可以继续添加更多行 -->
                             </tbody>
                         </table>
@@ -222,6 +231,24 @@
                 gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">IP地址: <input type="text" id="net4" placeholder="" /></div>';
                 gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">电量（可选）: <input type="text" id="net5" placeholder="" /></div>';
             } else if (content === "终端三") {
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">设备类型: <input type="text" id="net1" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">频道: <input type="text" id="net2" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">带宽: <input type="text" id="net3" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">IP地址: <input type="text" id="net4" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">电量（可选）: <input type="text" id="net5" placeholder="" /></div>';
+            } else if (content === "终端四") {
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">设备类型: <input type="text" id="net1" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">频道: <input type="text" id="net2" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">带宽: <input type="text" id="net3" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">IP地址: <input type="text" id="net4" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">电量（可选）: <input type="text" id="net5" placeholder="" /></div>';
+            } else if (content === "终端五") {
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">设备类型: <input type="text" id="net1" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">频道: <input type="text" id="net2" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">带宽: <input type="text" id="net3" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">IP地址: <input type="text" id="net4" placeholder="" /></div>';
+                gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">电量（可选）: <input type="text" id="net5" placeholder="" /></div>';
+            } else if (content === "终端六") {
                 gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">设备类型: <input type="text" id="net1" placeholder="" /></div>';
                 gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">频道: <input type="text" id="net2" placeholder="" /></div>';
                 gridHtml += '<div class="grid-item" style="background-color: ' + backgroundColor + ';">带宽: <input type="text" id="net3" placeholder="" /></div>';
