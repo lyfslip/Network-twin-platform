@@ -142,13 +142,15 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // 发送 SNMP SET 到源节点和目标节点
-            const setPromises = [sourceNode, targetNode].map(node => {
-                // 查找要设置的 MIB
+            const setPromises = [sourceNode, targetNode].flatMap(node => {
                 if (!node) {
                     console.warn('节点未定义');
-                    return Promise.resolve();
+                    return [];
                 }
-                return sendSNMPSet(node, targetOid, 'INTEGER', setValue);
+                return [
+                    sendSNMPSet(node, targetOid, 'INTEGER', setValue),
+                    sendSNMPSet(node, targetOid, 'INTEGER', setValue)
+                ];
             });
 
             // 等待所有 SNMP SET 请求完成
@@ -248,13 +250,15 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // 发送 SNMP SET 到源节点和目标节点
-            const setPromises = [sourceNode, targetNode].map(node => {
-                // 查找要设置的 MIB
+            const setPromises = [sourceNode, targetNode].flatMap(node => {
                 if (!node) {
                     console.warn('节点未定义');
-                    return Promise.resolve();
+                    return [];
                 }
-                return sendSNMPSet(node, targetOid, 'INTEGER', setValue);
+                return [
+                    sendSNMPSet(node, targetOid, 'INTEGER', setValue),
+                    sendSNMPSet(node, targetOid, 'INTEGER', setValue)
+                ];
             });
 
             // 等待所有 SNMP SET 请求完成
@@ -289,33 +293,75 @@ document.addEventListener('DOMContentLoaded', function () {
         if (sourceNode && targetNode) {
             const sourceName = sourceNode.name;
             const targetName = targetNode.name;
-            const key = sourceName < targetName ? sourceName + '-' + targetName : targetName + '-' + sourceName;
-            if (!linkCurvenessMap[key]) {
-                linkCurvenessMap[key] = 0;
+            let intermediateNodes = [];
+
+            // 根据终端类型设置中间节点
+            if (sourceNode.name.startsWith("SLE") && targetNode.name.startsWith("SLE")) {
+                intermediateNodes = ["协同控制节点2"];
+            } else if ((sourceNode.name.startsWith("SLB") || sourceNode.name.startsWith("专网")) &&
+                (targetNode.name.startsWith("SLB") || targetNode.name.startsWith("专网"))) {
+                intermediateNodes = ["协同控制节点1"];
+            } else if ((sourceNode.name.startsWith("SLB") || sourceNode.name.startsWith("专网")) &&
+                targetNode.name.startsWith("SLE")) {
+                intermediateNodes = ["协同控制节点1", "协同控制节点2"];
+            } else if (sourceNode.name.startsWith("SLE") &&
+                (targetNode.name.startsWith("SLB") || targetNode.name.startsWith("专网"))) {
+                intermediateNodes = ["协同控制节点2", "协同控制节点1"];
             }
-            linkCurvenessMap[key] += 1;
-            const curveness = Math.min(0.2 * linkCurvenessMap[key], 1);
 
             // 创建新的业务连接线，使用不同颜色区分业务类型
             const newLink = {
                 source: sourceName,
+                target: intermediateNodes[0],
+                value: businessType,
+                lineStyle: {
+                    normal: {
+                        color: getLinkColor(businessType),
+                        width: 2,
+                        type: 'dotted', // 业务线为虚线
+                        curveness: 0.2 // 设置曲率
+                    }
+                }
+            };
+
+            option.series[1].links.push(newLink);
+            myChart.setOption(option, true);
+
+            // 添加中间节点的连接
+            for (let i = 0; i < intermediateNodes.length - 1; i++) {
+                const nextLink = {
+                    source: intermediateNodes[i],
+                    target: intermediateNodes[i + 1],
+                    value: businessType,
+                    lineStyle: {
+                        normal: {
+                            color: getLinkColor(businessType),
+                            width: 2,
+                            type: 'dotted', // 业务线为虚线
+                            curveness: 0.2 // 设置曲率
+                        }
+                    }
+                };
+                option.series[1].links.push(nextLink);
+                myChart.setOption(option, true);
+            }
+
+            // 最后连接到目标节点
+            const finalLink = {
+                source: intermediateNodes[intermediateNodes.length - 1],
                 target: targetName,
                 value: businessType,
                 lineStyle: {
                     normal: {
                         color: getLinkColor(businessType),
                         width: 2,
-                        type: 'dotted',
-                        curveness: curveness
+                        type: 'dotted', // 业务线为虚线
+                        curveness: 0.2 // 设置曲率
                     }
-                },
-                label: {
-                    show: true,
-                    formatter: businessType
                 }
             };
 
-            option.series[0].links.push(newLink);
+            option.series[1].links.push(finalLink);
             myChart.setOption(option, true);
 
             // 更新任务说明框
@@ -345,21 +391,22 @@ document.addEventListener('DOMContentLoaded', function () {
             // 使用 setTimeout 在指定时间后断开连接
             if (disconnectTime > 0) {
                 const timeoutId = setTimeout(async () => {
-                    // 从业务连接中移除该连接
-                    option.series[0].links = option.series[0].links.filter(
-                        link => !(link.source === sourceName && link.target === targetName)
+                    // 从业务连接中移除整条连接，包括中间节点
+                    const allLinksToRemove = [sourceName, ...intermediateNodes, targetName];
+                    option.series[1].links = option.series[1].links.filter(
+                        link => !allLinksToRemove.includes(link.source) || !allLinksToRemove.includes(link.target)
                     );
                     myChart.setOption(option, true);
                     alert(`成功断开业务连接：${sourceName} → ${targetName}`);
 
                     // 发送更新后的连接状态到服务器
                     try {
-                        const response = await fetch('http://localhost:3000/api/topology/links', {
+                        const response = await fetch('http://localhost:3000/api/bd', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
                             },
-                            body: JSON.stringify(option.series[0].links),
+                            body: JSON.stringify(option.series[1].links),
                         });
 
                         if (!response.ok) {
@@ -373,12 +420,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // 发送业务到服务器
             try {
-                const response = await fetch('http://localhost:3000/api/topology/links', {
+                const response = await fetch('http://localhost:3000/api/bd', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(option.series[0].links),
+                    body: JSON.stringify(option.series[1].links),
                 });
 
                 if (response.ok) {
@@ -469,7 +516,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // 同步更新到服务器
             try {
-                const response = await fetch('http://localhost:3000/api/topology/links', {
+                const response = await fetch('http://localhost:3000/api/bd', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -516,13 +563,15 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // 发送 SNMP SET 到源节点和目标节点
-            const setPromises = [sourceNode, targetNode].map(node => {
-                // 查找要设置的 MIB
+            const setPromises = [sourceNode, targetNode].flatMap(node => {
                 if (!node) {
                     console.warn('节点未定义');
-                    return Promise.resolve();
+                    return [];
                 }
-                return sendSNMPSet(node, targetOid, 'OCTET STRING', setValue);
+                return [
+                    sendSNMPSet(node, targetOid, 'OCTET STRING', setValue),
+                    sendSNMPSet(node, targetOid, 'OCTET STRING', setValue)
+                ];
             });
 
             // 等待所有 SNMP SET 请求完成

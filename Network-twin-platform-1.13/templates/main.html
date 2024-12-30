@@ -574,6 +574,223 @@
                 lineStyle: [
                 ]
 
+            },
+            {
+                type: 'graph',
+                layout: 'none',
+                symbolSize: 45,
+                roam: true, //放大缩小
+                draggable: true, //拖动
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            color: "#fff",
+                            fontSize: 12,
+                        }
+                    }
+                },
+                edgeSymbol: ['circle'],
+                edgeSymbolSize: [4, 10],
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                data: [
+                    {
+                        name: 'SLE终端1',
+                        x: 50,
+                        y: 500,
+                        symbol: 'image://static/img/2.png',
+                        label: {
+                            show: true,
+                            formatter: 'SLE终端1',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        },
+                        mibs: [
+                            { oid: '1.3.6.1.4.1.2024.2.5.0', type: 'OCTET STRING' }, // ip地址
+                            { oid: '1.3.6.1.4.1.2024.2.3.0', type: 'INTEGER' },  // bw
+                            { oid: '1.3.6.1.4.1.2024.2.7.0', type: 'INTEGER' },//connectstate
+                            { oid: '1.3.6.1.4.1.2024.2.8.0', type: 'OCTET STRING' },//bdstate
+                            { oid: '1.3.6.1.4.1.2024.2.11.0', type: 'INTEGER' }//color 
+                        ],
+                        ip: "192.168.0.98"
+
+                    },
+                    {
+                        name: 'SLE终端2',
+                        x: 50,
+                        y: 600,
+                        symbol: 'image://static/img/2.png',
+                        label: {
+                            show: true,
+                            formatter: 'SLE终端2',
+                            position: 'bottom',
+                            offset: [0, 100]
+                        },
+                        mibs: [
+                            { oid: '1.3.6.1.4.1.2024.2.5.0', type: 'OCTET STRING' }, // ip地址
+                            { oid: '1.3.6.1.4.1.2024.2.3.0', type: 'INTEGER' },  // bw
+                            { oid: '1.3.6.1.4.1.2024.2.7.0', type: 'INTEGER' },//connectstate
+                            { oid: '1.3.6.1.4.1.2024.2.8.0', type: 'OCTET STRING' },//bdstate
+                            { oid: '1.3.6.1.4.1.2024.2.11.0', type: 'INTEGER' }//color 
+                        ],
+                        ip: "192.168.58.105"
+                    },
+                    {
+                        name: 'SLE终端3',
+                        x: 50,
+                        y: 400,
+                        symbol: 'image://static/img/2.png',
+                        label: {
+                            show: true,
+                            formatter: 'SLE终端3',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        },
+                        mibs: [
+                            { oid: '1.3.6.1.4.1.2024.2.5.0', type: 'OCTET STRING' }, // ip地址
+                            { oid: '1.3.6.1.4.1.2024.2.3.0', type: 'INTEGER' },  // bw
+                            { oid: '1.3.6.1.4.1.2024.2.7.0', type: 'INTEGER' },//connectstate
+                            { oid: '1.3.6.1.4.1.2024.2.8.0', type: 'OCTET STRING' },//bdstate
+                            { oid: '1.3.6.1.4.1.2024.2.11.0', type: 'INTEGER' }//color 
+                        ],
+                        ip: "192.168.1.106"
+                    },
+                    {
+                        name: '协同控制节点2',
+                        x: 200,
+                        y: 500,
+                        symbol: 'image://static/img/1.png',
+                        label: {
+                            show: true,
+                            formatter: '协同控制节点2',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        },
+                        mibs: [
+                            { oid: '1.3.6.1.4.1.2024.2.5.0', type: 'OCTET STRING' }, // ip地址
+                            { oid: '1.3.6.1.4.1.2024.2.3.0', type: 'INTEGER' },  // bw
+                            { oid: '1.3.6.1.4.1.2024.2.7.0', type: 'INTEGER' },//connectstate
+                            { oid: '1.3.6.1.4.1.2024.2.8.0', type: 'OCTET STRING' },//bdstate
+                            { oid: '1.3.6.1.4.1.2024.2.11.0', type: 'INTEGER' }//color 
+
+                        ],
+                        ip: "192.168.1.105"
+                    },
+                    {
+                        name: '协同控制节点1',
+                        x: 450,
+                        y: 500,
+                        symbol: 'image://static/img/1.png',
+                        label: {
+                            show: true,
+                            formatter: '协同控制节点1',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        },
+                        mibs: [
+                            { oid: '1.3.6.1.4.1.2024.2.5.0', type: 'OCTET STRING' }, // ip地址
+                            { oid: '1.3.6.1.4.1.2024.2.3.0', type: 'INTEGER' },  // bw
+                            { oid: '1.3.6.1.4.1.2024.2.7.0', type: 'INTEGER' },//connectstate
+                            { oid: '1.3.6.1.4.1.2024.2.8.0', type: 'OCTET STRING' },//bdstate
+                            { oid: '1.3.6.1.4.1.2024.2.11.0', type: 'INTEGER' }//color 
+                        ],
+                        ip: "192.168.1.104"
+
+                    },
+                    {
+                        name: '专网终端1',
+                        x: 450,
+                        y: 400,
+                        symbol: 'image://static/img/4.png',
+                        label: {
+                            show: true,
+                            formatter: '专网终端1',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        },
+                        mibs: [
+                            { oid: '1.3.6.1.4.1.2024.2.5.0', type: 'OCTET STRING' }, // ip地址
+                            { oid: '1.3.6.1.4.1.2024.2.3.0', type: 'INTEGER' },  // bw
+                            { oid: '1.3.6.1.4.1.2024.2.7.0', type: 'INTEGER' },//connectstate
+                            { oid: '1.3.6.1.4.1.2024.2.8.0', type: 'OCTET STRING' },//bdstate
+                            { oid: '1.3.6.1.4.1.2024.2.11.0', type: 'INTEGER' }//color 
+                        ],
+                        ip: "192.168.1.103"
+                    },
+                    {
+                        name: '专网终端2',
+                        x: 600,
+                        y: 400,
+                        symbol: 'image://static/img/4.png',
+                        label: {
+                            show: true,
+                            formatter: '专网终端2',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        },
+                        mibs: [
+                            { oid: '1.3.6.1.4.1.2024.2.5.0', type: 'OCTET STRING' }, // ip地址
+                            { oid: '1.3.6.1.4.1.2024.2.3.0', type: 'INTEGER' },  // bw
+                            { oid: '1.3.6.1.4.1.2024.2.7.0', type: 'INTEGER' },//connectstate
+                            { oid: '1.3.6.1.4.1.2024.2.8.0', type: 'OCTET STRING' },//bdstate
+                            { oid: '1.3.6.1.4.1.2024.2.11.0', type: 'INTEGER' }//color 
+                        ],
+                        ip: "192.168.1.102"
+                    },
+                    {
+                        name: 'SLB终端1',
+                        x: 600,
+                        y: 500,
+                        symbol: 'image://static/img/3.png',
+                        label: {
+                            show: true,
+                            formatter: 'SLB终端1',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        },
+                        mibs: [
+                            { oid: '1.3.6.1.4.1.2024.2.5.0', type: 'OCTET STRING' }, // ip地址
+                            { oid: '1.3.6.1.4.1.2024.2.3.0', type: 'INTEGER' },  // bw
+                            { oid: '1.3.6.1.4.1.2024.2.7.0', type: 'INTEGER' },//connectstate
+                            { oid: '1.3.6.1.4.1.2024.2.8.0', type: 'OCTET STRING' },//bdstate
+                            { oid: '1.3.6.1.4.1.2024.2.11.0', type: 'INTEGER' }//color 
+                        ],
+                        ip: "192.168.1.100"
+                    },
+                    {
+                        name: 'SLB终端2',
+                        x: 600,
+                        y: 600,
+                        symbol: 'image://static/img/3.png',
+                        label: {
+                            show: true,
+                            formatter: 'SLB终端2',
+                            position: 'bottom',
+                            offset: [0, 10]
+                        },
+                        mibs: [
+                            { oid: '1.3.6.1.4.1.2024.2.5.0', type: 'OCTET STRING' }, // ip地址
+                            { oid: '1.3.6.1.4.1.2024.2.3.0', type: 'INTEGER' },  // bw
+                            { oid: '1.3.6.1.4.1.2024.2.7.0', type: 'INTEGER' },//connectstate
+                            { oid: '1.3.6.1.4.1.2024.2.8.0', type: 'OCTET STRING' },//bdstate
+                            { oid: '1.3.6.1.4.1.2024.2.11.0', type: 'INTEGER' }//color 
+                        ],
+                        ip: "192.168.1.101"
+                    }
+                ],
+                links: [
+                ],
+                lineStyle: [
+                ]
+
             }
         ]
     };
